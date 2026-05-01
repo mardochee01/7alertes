@@ -30,12 +30,28 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Variables d'environnement — NE JAMAIS committer les clés
 .env*
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Supabase local
+supabase/.branches
+supabase/.temp
+
+# Scripts de migration (contiennent des credentials DB)
+scripts/
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db

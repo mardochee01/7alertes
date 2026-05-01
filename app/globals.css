@@ -1,26 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* ── Brand palette ── */
+  --color-gold:   #C9A84C;
+  --color-gold-l: #E8C96A;
+  --color-gold-p: #F5E4B0;
+  --color-dg:     #1A3A2A;
+  --color-forest: #2D5A3D;
+  --color-sage:   #4A7A5A;
+  --color-cream:  #F5EDD8;
+  --color-ivory:  #FAF7EF;
+  --color-dark:   #0D1F15;
+  --color-td:     #2C1A0E;
+  --color-tm:     #5C4A30;
+  --color-tl:     #8C7A60;
+  --color-blush:  #F2E4D0;
+  --color-danger: #C0392B;
+  --color-ok:     #2D8A5A;
+  --color-warn:   #C87A20;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Typography ── */
+  --font-serif:   "Cormorant Garamond", Georgia, serif;
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-sans:    "Jost", system-ui, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ── Animations ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50%       { transform: translateY(-10px) rotate(1deg); }
+  }
+  @keyframes rotate-slow {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateX(16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-back {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,.4); }
+    50%       { box-shadow: 0 0 0 6px rgba(201,168,76,0); }
+  }
+  @keyframes typing-dot {
+    0%, 80%, 100% { transform: scale(.55); opacity: .38; }
+    40%            { transform: scale(1);   opacity: 1; }
+  }
+  @keyframes stagger-up {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes crown-win {
+    0%   { filter: drop-shadow(0 0 16px rgba(201,168,76,.58)); }
+    50%  { filter: drop-shadow(0 0 50px rgba(201,168,76,1)) drop-shadow(0 0 80px rgba(201,168,76,.6)); }
+    100% { filter: drop-shadow(0 0 16px rgba(201,168,76,.58)); }
   }
 }
 
+* { -webkit-tap-highlight-color: transparent; }
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-dark);
+  color: var(--color-td);
+  overflow-x: hidden;
 }
+
+/* thin gold scrollbar */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(201,168,76,.3); border-radius: 2px; }
