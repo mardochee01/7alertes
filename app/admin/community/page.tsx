@@ -157,7 +157,7 @@ export default function AdminCommunity() {
   const totalCmts    = posts.reduce((s, p) => s + p.comments.length, 0);
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>

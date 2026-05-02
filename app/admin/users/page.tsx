@@ -75,7 +75,7 @@ export default function AdminUsers() {
   const disabledCount = users.filter((u) => u.is_disabled).length;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>

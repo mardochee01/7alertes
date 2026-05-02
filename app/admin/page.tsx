@@ -33,7 +33,7 @@ export default function AdminDashboard() {
   const CHAPTERS = [1,2,3,4,5,6,7];
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-8">
         <h1 className="font-serif font-light text-ivory text-[2rem]">Vue globale</h1>
         <p className="text-ivory/40 text-sm mt-1">Tableau de bord Maman Lili</p>

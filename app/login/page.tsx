@@ -6,21 +6,22 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { loadProfile } from "@/lib/supabase/profile";
 import { useAppStore } from "@/store/useAppStore";
-import { QueenAvatar } from "@/components/ui/QueenAvatar";
+import { CrownSvg } from "@/components/ui/CrownSvg";
+import type React from "react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function LoginPage() {
-  const router  = useRouter();
-  const store   = useAppStore();
+  const router = useRouter();
+  const store = useAppStore();
 
-  const [email,    setEmail]    = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading,  setLoading]  = useState(false);
-  const [error,    setError]    = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleLogin() {
-    if (!email.trim() || !password)  { setError("Remplis tous les champs"); return; }
+    if (!email.trim() || !password) { setError("Remplis tous les champs"); return; }
     setError(""); setLoading(true);
 
     const sb = createClient();
@@ -34,20 +35,18 @@ export default function LoginPage() {
     // Charge le profil depuis Supabase
     const profile = await loadProfile(data.user.id);
     if (profile) {
-      // Hydrate Zustand avec les données du serveur
-      store.setQName(profile.qName           ?? "");
-      store.setKName(profile.kName           ?? "mon roi");
+      store.setQName(profile.qName ?? "");
+      store.setKName(profile.kName ?? "mon roi");
       store.setKingdomName(profile.kingdomName ?? "Le Royaume");
       store.setProfilePhoto(profile.profilePhoto ?? "");
-      store.setStartDate(profile.startDate    ?? "");
+      store.setStartDate(profile.startDate ?? "");
       if (profile.chapsDone?.length) {
         profile.chapsDone.forEach((n) => store.completeChap(n));
       }
-      // XP, HP et streak depuis le profil DB
       useAppStore.setState({
-        crownHP: profile.crownHP   ?? 7,
-        xp:      profile.xp        ?? 0,
-        streak:  profile.streak    ?? 1,
+        crownHP: profile.crownHP ?? 7,
+        xp: profile.xp ?? 0,
+        streak: profile.streak ?? 1,
       });
       store.updateStreak();
     }
@@ -59,43 +58,22 @@ export default function LoginPage() {
     <div className="min-h-screen bg-ivory grid md:grid-cols-2">
       {/* ── Côté visuel ───────────────────────────────────────── */}
       <div className="hidden md:flex relative flex-col items-center justify-center p-12 overflow-hidden"
-           style={{ background: "linear-gradient(160deg,#1A3A2A,#0D1F15)" }}>
+        style={{ background: "linear-gradient(160deg,#1A3A2A,#0D1F15)" }}>
         <div className="absolute inset-0"
-             style={{ background: "radial-gradient(ellipse 100% 100% at 50% 110%,rgba(201,168,76,.18),transparent 60%)" }} />
+          style={{ background: "radial-gradient(ellipse 100% 100% at 50% 110%,rgba(201,168,76,.18),transparent 60%)" }} />
         <div className="relative z-10 text-center max-w-xs">
-          {/* Avatar couronne */}
-          <div className="mx-auto mb-5 drop-shadow-[0_0_30px_rgba(201,168,76,.5)]">
-            <QueenAvatar size={100} />
-          </div>
-          <h2 className="font-serif font-light text-ivory text-[2rem] leading-[1.2] mb-4">
-            Bienvenue dans<br /><em className="italic text-gold-l">ton Royaume</em>
-          </h2>
-          {/* Message d'accueil */}
-          <div className="bg-white/5 border border-gold/20 rounded-2xl p-4 text-left">
-            <p className="font-serif italic text-ivory/85 text-[.95rem] leading-[1.7]">
-              Bienvenue dans le parcours de ton royaume. Protège ta couronne jusqu'au bout.
-            </p>
-            <div className="w-8 h-px my-3" style={{ background: "linear-gradient(90deg,transparent,#C9A84C,transparent)" }} />
-            <p className="font-serif italic text-ivory/60 text-[.88rem] leading-[1.6]">
-              Si tu réponds incorrectement, un eunuque apparaîtra pour éteindre une des lumières de ta couronne.
-            </p>
-          </div>
+          <CrownSvg
+            id="login-crown"
+            width={120}
+            height={90}
+            className="mx-auto drop-shadow-[0_0_48px_rgba(201,168,76,.65)]"
+            style={{ animation: "float 4s ease-in-out infinite" } as React.CSSProperties}
+          />
         </div>
       </div>
 
       {/* ── Formulaire ────────────────────────────────────────── */}
       <div className="flex flex-col justify-center px-8 py-14 md:px-12 bg-ivory">
-        {/* Message d'accueil mobile (caché sur desktop) */}
-        <div className="md:hidden mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 drop-shadow-[0_0_20px_rgba(201,168,76,.4)]">
-            <QueenAvatar size={84} />
-          </div>
-          <p className="font-serif italic text-[.9rem] text-tl leading-[1.65] max-w-xs">
-            Bienvenue dans le parcours de ton royaume. Protège ta couronne jusqu'au bout. Si tu réponds incorrectement, un eunuque apparaîtra pour éteindre une des lumières de ta couronne.
-          </p>
-          <div className="w-12 h-px mt-4" style={{ background: "linear-gradient(90deg,transparent,#C9A84C,transparent)" }} />
-        </div>
-
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}

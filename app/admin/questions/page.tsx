@@ -141,10 +141,11 @@ export default function AdminQuestions() {
   const pendingMessage = activeConv?.messages.find((m) => !m.answered) ?? null;
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-[calc(100vh-56px)] md:h-screen overflow-hidden">
 
       {/* ── Liste des conversations ──────────────────────────────────────── */}
-      <div className="w-72 flex-shrink-0 border-r border-white/6 flex flex-col bg-black/10">
+      <div className={`flex-shrink-0 border-r border-white/6 flex flex-col bg-black/10
+                       ${selectedUser ? "hidden md:flex w-72" : "flex w-full md:w-72"}`}>
         <div className="px-5 py-4 border-b border-white/6">
           <h1 className="font-serif text-ivory text-[1.3rem] font-light">Messages</h1>
           {totalPending > 0 && (
@@ -195,28 +196,35 @@ export default function AdminQuestions() {
 
       {/* ── Thread de conversation ───────────────────────────────────────── */}
       {!activeConv ? (
-        <div className="flex-1 flex items-center justify-center text-ivory/20 font-serif italic text-lg">
+        <div className="hidden md:flex flex-1 items-center justify-center text-ivory/20 font-serif italic text-lg">
           Sélectionne une conversation
         </div>
       ) : (
         <div className="flex-1 flex flex-col min-h-0">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/6 flex-shrink-0">
-            <div>
-              <p className="font-serif text-ivory text-[1.1rem]">{activeConv.queenName}</p>
-              <p className="text-[.72rem] text-ivory/35">
-                {activeConv.messages.length} message{activeConv.messages.length > 1 ? "s" : ""}
-                {activeConv.unanswered > 0 && (
-                  <span className="text-gold ml-2">· {activeConv.unanswered} en attente</span>
-                )}
-              </p>
+          <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-white/6 flex-shrink-0">
+            <div className="flex items-center gap-3">
+              {/* Retour mobile */}
+              <button onClick={() => setSelectedUser(null)}
+                      className="md:hidden text-ivory/40 hover:text-ivory/70 transition-colors text-lg leading-none">
+                ←
+              </button>
+              <div>
+                <p className="font-serif text-ivory text-[1.1rem]">{activeConv.queenName}</p>
+                <p className="text-[.72rem] text-ivory/35">
+                  {activeConv.messages.length} message{activeConv.messages.length > 1 ? "s" : ""}
+                  {activeConv.unanswered > 0 && (
+                    <span className="text-gold ml-2">· {activeConv.unanswered} en attente</span>
+                  )}
+                </p>
+              </div>
             </div>
             <button
               onClick={() => handleDeleteConversation(activeConv.userId)}
               className="text-[.72rem] text-danger/60 hover:text-danger border border-danger/20
                          hover:border-danger/40 px-3 py-1.5 rounded-lg font-sans transition-all"
             >
-              🗑 Supprimer la conversation
+              🗑 Supprimer
             </button>
           </div>
 
