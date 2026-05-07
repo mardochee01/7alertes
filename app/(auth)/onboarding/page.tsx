@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/useAppStore";
 import { createClient } from "@/lib/supabase/client";
 import { saveProfile } from "@/lib/supabase/profile";
-import { CrownSvg } from "@/components/ui/CrownSvg";
 import { today } from "@/lib/utils";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -134,14 +133,24 @@ export default function OnboardingPage() {
           }}>
           ← Accueil
         </button>
+        <video autoPlay loop muted playsInline className="pointer-events-none"
+          style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)",
+                   width:"100%", height:"100%", objectFit:"cover", opacity:0.22,
+                   mixBlendMode:"screen", zIndex:0 }}>
+          <source src="/videos/courone.mp4" type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute inset-0" style={{ zIndex:0,
+          background:[
+            "radial-gradient(ellipse 78% 78% at 50% 50%,transparent 38%,#0F0205 86%)",
+            "linear-gradient(to bottom,#0F0205 0%,transparent 16%,transparent 84%,#0F0205 100%)",
+            "linear-gradient(to right,#0F0205 0%,transparent 13%,transparent 87%,#0F0205 100%)",
+          ].join(",") }} />
         <div className="relative z-10 text-center">
-          <CrownSvg id="onb" width={72} height={54}
-                    className="mx-auto drop-shadow-[0_0_20px_rgba(201,168,76,.5)]" />
-          <h2 className="font-serif font-light text-ivory text-[2.5rem] leading-[1.2] mt-5">
+          <h2 className="font-serif font-light text-ivory text-[2.5rem] leading-[1.2]">
             {step === 0 ? <>Chaque reine<br />porte un nom</>
-           : step === 1 ? <>Ton roi,<br />ton pilier</>
-           : step === 2 ? <>Baptise<br />ton royaume</>
-           : <>Ton royaume<br />t'attend</>}
+           : step === 1 ? <>Désigne<br />ton roi</>
+           : step === 2 ? <>Nomme<br />ton royaume</>
+           : <>{kingdomInput.trim() || "Ton royaume"}<br />t'attend</>}
           </h2>
           <p className="font-serif italic text-ivory/50 mt-3 leading-relaxed">
             {step === 0 ? "Ton parcours sera entièrement personnalisé"
@@ -173,17 +182,17 @@ export default function OnboardingPage() {
           ))}
         </div>
 
+        <div style={{ overflow: "hidden" }}>
         <AnimatePresence mode="wait">
           {/* ── Step 0 : prénom reine ── */}
           {step === 0 && (
             <motion.div key="s0"
-              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
+              initial={{ opacity: 0, y: 56 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -56 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[0].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
                 Chère Reine, quel est<br /><em className="text-forest italic">ton prénom ?</em>
               </h2>
-              <p className="text-sm text-tl leading-relaxed mb-8">Ce prénom ornera ta couronne tout au long du parcours.</p>
               <label className="font-display text-[.62rem] tracking-[.2em] uppercase text-tm mb-2 block">Ton prénom</label>
               <input autoFocus value={qInput}
                 onChange={(e) => { setQInput(e.target.value); setError(""); }}
@@ -191,7 +200,6 @@ export default function OnboardingPage() {
                 placeholder="Sarah, Nadia, Grace…"
                 className="w-full px-4 py-3.5 border border-black/10 rounded-lg bg-white font-serif text-[1.2rem]
                            text-td outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(201,168,76,.11)] mb-1" />
-              <p className="text-[.76rem] text-tl mb-5">Celui qui orne ta couronne</p>
               {error && <p className="text-danger text-sm mb-3">{error}</p>}
               <button onClick={handleStep0} className={btnPrimary}>Continuer →</button>
 
@@ -212,21 +220,20 @@ export default function OnboardingPage() {
           {/* ── Step 1 : prénom roi ── */}
           {step === 1 && (
             <motion.div key="s1"
-              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
+              initial={{ opacity: 0, y: 56 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -56 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[1].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
                 Et ton <em className="text-forest italic">Roi</em>,<br />comment s'appelle-t-il ?
               </h2>
-              <p className="text-sm text-tl leading-relaxed mb-8">Son prénom rendra chaque scénario profondément personnel.</p>
-              <label className="font-display text-[.62rem] tracking-[.2em] uppercase text-tm mb-2 block">Prénom de ton conjoint</label>
+              <p className="text-sm text-tl leading-relaxed mb-8">Son prénom rendra chaque scénario unique.</p>
+              <label className="font-display text-[.62rem] tracking-[.2em] uppercase text-tm mb-2 block">Prénom de ton roi</label>
               <input autoFocus value={kInput}
                 onChange={(e) => setKInput(e.target.value)}
                 onKeyDown={handleKey(handleStep1)}
                 placeholder="David, Samuel, Élie…"
                 className="w-full px-4 py-3.5 border border-black/10 rounded-lg bg-white font-serif text-[1.2rem]
                            text-td outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(201,168,76,.11)] mb-1" />
-              <p className="text-[.76rem] text-tl mb-5">Il partagera ton royaume</p>
               <button onClick={handleStep1} className={btnPrimary}>Continuer →</button>
               <button onClick={() => setStep(0)} className={btnBack}>← Retour</button>
             </motion.div>
@@ -235,7 +242,7 @@ export default function OnboardingPage() {
           {/* ── Step 2 : nom du royaume ── */}
           {step === 2 && (
             <motion.div key="s2"
-              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
+              initial={{ opacity: 0, y: 56 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -56 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[2].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
@@ -262,7 +269,7 @@ export default function OnboardingPage() {
           {/* ── Step 3 : compte email/mdp ── */}
           {step === 3 && (
             <motion.div key="s3"
-              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
+              initial={{ opacity: 0, y: 56 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -56 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[3].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-2">
@@ -290,9 +297,18 @@ export default function OnboardingPage() {
                 className="w-full px-4 py-3.5 border border-black/10 rounded-lg bg-white font-sans text-[1rem]
                            text-td outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(201,168,76,.11)] mb-1" />
               <p className="text-[.76rem] text-tl mb-5">Ta progression sera synchronisée automatiquement</p>
-              {error && <p className="text-danger text-sm mb-3">{error}</p>}
+              {error && (
+                <>
+                  <p className="text-danger text-sm mb-3">{error}</p>
+                  {error.includes("Ce compte existe déjà") && (
+                    <button onClick={() => router.push("/login")} className={btnPrimary} style={{ marginBottom: 12 }}>
+                      Reprendre mon parcours →
+                    </button>
+                  )}
+                </>
+              )}
               <button onClick={handleDone} disabled={loading} className={btnPrimary}>
-                {loading ? "Création du compte…" : "Entrer dans mon royaume →"}
+                {loading ? "Création du compte…" : "Accéder à mon royaume →"}
               </button>
               <button onClick={() => setStep(2)} className={btnBack}>← Retour</button>
             </motion.div>
@@ -322,6 +338,7 @@ export default function OnboardingPage() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
     </div>
   );

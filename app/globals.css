@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&family=Poppins:wght@100;300;400;500;600;700;900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -26,6 +26,7 @@
   --font-display: "Cinzel", "Times New Roman", serif;
   --font-sans:    "Jost", system-ui, sans-serif;
   --font-bold:    "Oswald", "Arial Narrow", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
 
   /* ── Animations ── */
   @keyframes float {

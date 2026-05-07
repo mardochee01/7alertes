@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -24,41 +24,61 @@ const FEATURES = [
 ]; */
 
 /* ─────────────────────────────────────────
+   Curseur clignotant machine à écrire
+───────────────────────────────────────── */
+function TwCursor() {
+  return (
+    <motion.span
+      animate={{ opacity: [1, 1, 0, 0] }}
+      transition={{ duration: 0.9, repeat: Infinity, times: [0, 0.49, 0.5, 1], ease: "linear" }}
+      style={{ color: "#C9A84C", fontWeight: 300 }}
+    >|</motion.span>
+  );
+}
+
+/* ─────────────────────────────────────────
    Book cover 3D
 ───────────────────────────────────────── */
 function BookPresentation() {
-  const COVER_W = 460;
-  const SPINE_W = 36;
   return (
-    <div style={{ perspective: "1100px", perspectiveOrigin: "60% 50%" }}>
+    <motion.div
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 1.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      initial="rest" whileHover="hover"
+      style={{ position: "relative", display: "inline-block" }}
+    >
       <motion.div
-        initial={{ opacity: 0, rotateY: -55, x: 60, scale: 0.88 }}
-        animate={{ opacity: 1, rotateY: -18, x: 0, scale: 1 }}
-        transition={{ duration: 1.4, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformStyle: "preserve-3d", position: "relative", display: "inline-block" }}
+        variants={{ rest: { scale: 1 }, hover: { scale: 1.04 } }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        style={{ position: "relative" }}
       >
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
-          style={{ transformStyle: "preserve-3d", position: "relative" }}
-        >
-          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: SPINE_W, borderRadius: "3px 0 0 3px", background: "linear-gradient(to right,#2A0508,#6A0F18,#8B1520)", transform: "rotateY(90deg)", transformOrigin: "left center", backfaceVisibility: "hidden" }} />
-          <div style={{ position: "absolute", top: 0, left: 1, right: 0, height: 18, borderRadius: "0 2px 0 0", background: "linear-gradient(160deg,#F8F2EC,#DDD4CA)", transform: "rotateX(90deg)", transformOrigin: "top center", backfaceVisibility: "hidden" }} />
-          <img src="/images/book-cover.png" alt="7 Alertes" style={{ width: COVER_W, display: "block", borderRadius: "0 4px 4px 0", position: "relative", zIndex: 1 }} draggable={false} />
-          <div style={{ position: "absolute", inset: 0, borderRadius: "0 4px 4px 0", background: "linear-gradient(128deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.06) 25%,transparent 55%,rgba(0,0,0,.06) 100%)", pointerEvents: "none", zIndex: 2 }} />
-        </motion.div>
-        <motion.div
-          animate={{ scaleX: [1, 0.88, 1], opacity: [0.28, 0.16, 0.28], y: [0, 12, 0] }}
-          transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
-          style={{ position: "absolute", bottom: -22, left: "8%", right: "-2%", height: 28, background: "rgba(0,0,0,.3)", filter: "blur(14px)", borderRadius: "50%", transformOrigin: "center" }}
-        />
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 0.18 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          style={{ position: "absolute", inset: "-20px -40px", background: "radial-gradient(ellipse 60% 70% at 70% 50%,rgba(192,57,43,.55),transparent)", filter: "blur(24px)", pointerEvents: "none", zIndex: -1 }}
+        {/* Image du livre */}
+        <motion.img
+          src="/images/book-cover.png"
+          alt="7 Alertes"
+          animate={{ y: [0, -18, 0] }}
+          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 1.6 }}
+          style={{
+            width: "clamp(300px,34vw,500px)",
+            display: "block",
+            position: "relative",
+            zIndex: 1,
+            filter: "drop-shadow(0 32px 64px rgba(192,57,43,.52)) drop-shadow(0 0 52px rgba(201,168,76,.24)) drop-shadow(0 8px 28px rgba(0,0,0,.75))",
+          }}
+          draggable={false}
         />
       </motion.div>
-    </div>
+
+      {/* Ombre au sol */}
+      <motion.div
+        animate={{ scaleX: [1, 0.8, 1], opacity: [0.3, 0.12, 0.3], y: [0, 18, 0] }}
+        transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 1.6 }}
+        style={{
+          position: "absolute", bottom: -18, left: "6%", right: "6%", height: 24,
+          background: "rgba(0,0,0,.5)", filter: "blur(16px)", borderRadius: "50%", transformOrigin: "center"
+        }}
+      />
+    </motion.div>
   );
 }
 
@@ -89,14 +109,52 @@ export default function LandingPage() {
   const router = useRouter();
 
   /* Refs gallery */
-  const galleryRef    = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const frameOuterRef = useRef<HTMLDivElement>(null);
-  const photo2Ref     = useRef<HTMLDivElement>(null);
-  const photo3Ref     = useRef<HTMLDivElement>(null);
+  const photo2Ref = useRef<HTMLDivElement>(null);
+  const photo3Ref = useRef<HTMLDivElement>(null);
 
   /* Refs triggers scroll (les headings de chaque section) */
-  const s3TriggerRef  = useRef<HTMLDivElement>(null);
-  const s4TriggerRef  = useRef<HTMLDivElement>(null);
+  const s3TriggerRef = useRef<HTMLDivElement>(null);
+  const s4TriggerRef = useRef<HTMLDivElement>(null);
+
+  /* ── Machine à écrire (boucle 2 messages) ── */
+  const TW_MSGS = [
+    "Bienvenue,\nma Reine",
+    "Ce parcours a été conçu avec",
+    "amour pour toi et ton couple."
+  ];
+  const [twTyped, setTwTyped] = useState("");
+  const [twMsg, setTwMsg] = useState(0);
+  const [twErasing, setTwErasing] = useState(false);
+  const [twStarted, setTwStarted] = useState(false);
+  const [discoverReady, setDiscoverReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setTwStarted(true), 900);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!twStarted) return;
+    const full = TW_MSGS[twMsg];
+    if (!twErasing) {
+      if (twTyped.length < full.length) {
+        const t = setTimeout(() => setTwTyped(full.slice(0, twTyped.length + 1)), 85 + Math.random() * 55);
+        return () => clearTimeout(t);
+      }
+      if (twMsg === 2 && !discoverReady) setDiscoverReady(true);
+      const t = setTimeout(() => setTwErasing(true), 2200);
+      return () => clearTimeout(t);
+    } else {
+      if (twTyped.length > 0) {
+        const t = setTimeout(() => setTwTyped(full.slice(0, twTyped.length - 1)), 42 + Math.random() * 22);
+        return () => clearTimeout(t);
+      }
+      const t = setTimeout(() => { setTwMsg((p) => (p + 1) % TW_MSGS.length); setTwErasing(false); }, 420);
+      return () => clearTimeout(t);
+    }
+  }, [twTyped, twMsg, twErasing, twStarted]);
 
   useEffect(() => {
     /* ── Lenis smooth scroll ────────────────────── */
@@ -126,7 +184,7 @@ export default function LandingPage() {
         scrollTrigger: {
           trigger: s3TriggerRef.current,
           start: "top 120%",   /* commence avant que le titre soit visible */
-          end:   "top 60%",    /* termine quand le titre est au centre */
+          end: "top 60%",    /* termine quand le titre est au centre */
           scrub: true,
         },
       });
@@ -138,7 +196,7 @@ export default function LandingPage() {
         scrollTrigger: {
           trigger: s4TriggerRef.current,
           start: "top 120%",
-          end:   "top 60%",
+          end: "top 60%",
           scrub: true,
         },
       });
@@ -147,12 +205,12 @@ export default function LandingPage() {
       ScrollTrigger.create({
         trigger: s3TriggerRef.current,
         start: "top 80%",
-        onEnter:     () => {
-          gsap.to(galleryRef.current,    { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
+        onEnter: () => {
+          gsap.to(galleryRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
           gsap.to(frameOuterRef.current, { backgroundColor: "#5A3A1A", duration: 0.6, ease: "power2.out" });
         },
         onLeaveBack: () => {
-          gsap.to(galleryRef.current,    { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
+          gsap.to(galleryRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
           gsap.to(frameOuterRef.current, { backgroundColor: "#034038", duration: 0.6, ease: "power2.out" });
         },
       });
@@ -161,12 +219,12 @@ export default function LandingPage() {
       ScrollTrigger.create({
         trigger: s4TriggerRef.current,
         start: "top 80%",
-        onEnter:     () => {
-          gsap.to(galleryRef.current,    { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
+        onEnter: () => {
+          gsap.to(galleryRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
           gsap.to(frameOuterRef.current, { backgroundColor: "#034038", duration: 0.6, ease: "power2.out" });
         },
         onLeaveBack: () => {
-          gsap.to(galleryRef.current,    { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
+          gsap.to(galleryRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
           gsap.to(frameOuterRef.current, { backgroundColor: "#5A3A1A", duration: 0.6, ease: "power2.out" });
         },
       });
@@ -182,76 +240,164 @@ export default function LandingPage() {
 
   return (
     <div>
-      <style>{`.font-bold-display{font-family:var(--font-bold)}`}</style>
+      <style>{`.font-poppins{font-family:var(--font-poppins)}`}</style>
       <ToastProvider />
 
       {/* ══════════════════════════════════════════
           SECTION 1 — HERO
       ══════════════════════════════════════════ */}
       <section
-        style={{ height: "100dvh", background: "#FFFFFF", position: "relative", overflow: "hidden" }}
+        style={{ height: "100dvh", background: "linear-gradient(158deg,#0F0205,#250810 50%,#0F0205)", position: "relative", overflow: "hidden" }}
         className="flex items-center"
       >
-        <div className="absolute top-0 left-0 right-0 h-1" style={{ background: "#C0392B" }} />
+        {/* Halo central rouge/doré */}
+        <div className="pointer-events-none absolute inset-0" style={{
+          background: "radial-gradient(ellipse 55% 55% at 50% 62%,rgba(192,57,43,.12),transparent),radial-gradient(ellipse 35% 35% at 50% 0%,rgba(201,168,76,.06),transparent)",
+        }} />
+
+        {/* Couronne animée */}
+        <video autoPlay loop muted playsInline className="pointer-events-none"
+          style={{
+            position: "absolute", top: "50%", left: "50%",
+            transform: "translate(-50%,-50%)", width: "100%", height: "100%",
+            objectFit: "cover", opacity: 0.22, mixBlendMode: "screen", zIndex: 0
+          }}>
+          <source src="/videos/courone.mp4" type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute inset-0" style={{
+          zIndex: 0,
+          background: [
+            "radial-gradient(ellipse 78% 78% at 50% 50%,transparent 38%,#0F0205 86%)",
+            "linear-gradient(to bottom,#0F0205 0%,transparent 16%,transparent 84%,#0F0205 100%)",
+            "linear-gradient(to right,#0F0205 0%,transparent 13%,transparent 87%,#0F0205 100%)",
+          ].join(",")
+        }} />
+
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-14
-                        flex flex-col md:flex-row items-center gap-8 md:gap-12 justify-between">
-          <div className="flex flex-col flex-1 min-w-0">
-            <motion.span initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55 }}
-              className="font-bold-display uppercase tracking-[.28em] mb-5"
-              style={{ fontSize: "0.63rem", color: "#C9A84C" }}>
-              Le Mystère des Sept Eunuques
-            </motion.span>
-            <motion.h1 initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="font-bold-display leading-[0.88] mb-5"
-              style={{ fontSize: "clamp(3.8rem,8vw,7rem)", fontWeight: 700 }}>
-              <span style={{ color: "#C0392B" }}>7</span>
-              <span style={{ color: "#1A1008" }}>ALERTES</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, x: -28 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="font-bold-display leading-[1.15] mb-5"
-              style={{ fontSize: "clamp(1.3rem,3vw,2rem)", fontWeight: 300, color: "#1A1008", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-              Avant que ton couple<br />ne se brise
+                        flex flex-col md:flex-row items-center gap-10 md:gap-16 justify-between">
+          {/* Message de bienvenue */}
+          <div className="flex flex-col">
+            <motion.p
+              initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="font-poppins uppercase tracking-[.35em] mb-4"
+              style={{ fontSize: "0.6rem", color: "rgba(201,168,76,.55)" }}>
+              Un message de Lilliane Sanogo
             </motion.p>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              transition={{ duration: 0.55, delay: 0.38 }}
-              className="font-bold-display uppercase tracking-[.3em] mb-7"
-              style={{ fontSize: "0.67rem", color: "#C9A84C", fontWeight: 500 }}>
-              Lilliane Sanogo
+            {/* Zone typewriter — 2 messages en boucle */}
+            <div style={{ minHeight: 140, marginBottom: "1.5rem" }}>
+              <h1 className="font-poppins leading-[1.1]"
+                style={{ fontSize: "clamp(2rem,5vw,4rem)", fontWeight: 700, textTransform: "uppercase", color: "#FFFFFF" }}>
+                {(() => {
+                  const full = TW_MSGS[twMsg];
+                  const lines = full.split("\n");
+                  /* find which line is currently being typed */
+                  let remaining = twTyped;
+                  const rendered: React.ReactNode[] = [];
+                  for (let i = 0; i < lines.length; i++) {
+                    const seg = lines[i];
+                    if (remaining.length === 0) {
+                      /* cursor sits here — nothing typed yet on this line */
+                      if (i > 0) rendered.push(<br key={`br-${i}`} />);
+                      rendered.push(<TwCursor key="cur" />);
+                      break;
+                    }
+                    if (remaining.length <= seg.length) {
+                      /* partially typed this segment */
+                      const typed = remaining.slice(0, remaining.length);
+                      if (i > 0) rendered.push(<br key={`br-${i}`} />);
+                      /* blank line: render a hair-space so <br> has height */
+                      if (seg === "") {
+                        rendered.push(<span key={i} style={{ color: "#C9A84C" }}>&thinsp;<TwCursor /></span>);
+                      } else {
+                        rendered.push(
+                          <span key={i} style={{ color: i === 0 ? "#FFFFFF" : "#C9A84C" }}>
+                            {typed}<TwCursor />
+                          </span>
+                        );
+                      }
+                      break;
+                    }
+                    /* full line typed */
+                    if (i > 0) rendered.push(<br key={`br-${i}`} />);
+                    if (seg === "") {
+                      rendered.push(<span key={i}>&thinsp;</span>);
+                    } else {
+                      rendered.push(
+                        <span key={i} style={{ color: i === 0 ? "#FFFFFF" : "#C9A84C" }}>{seg}</span>
+                      );
+                    }
+                    remaining = remaining.slice(seg.length + 1); /* +1 for \n */
+                  }
+                  /* if all lines fully typed, append cursor after last */
+                  if (twTyped === full) {
+                    rendered.push(<TwCursor key="cur-end" />);
+                  }
+                  return rendered;
+                })()}
+              </h1>
+            </div>
+            <div className="origin-left mb-6"
+              style={{ height: 1, width: 52, background: "rgba(201,168,76,.4)" }} />
+            <motion.p
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.75 }}
+              className="font-poppins uppercase tracking-[.28em] mt-8"
+              style={{ fontSize: "0.6rem", color: "rgba(201,168,76,.6)" }}>
+              — Lilliane Sanogo
             </motion.p>
-            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-              transition={{ duration: 0.7, delay: 0.44, ease: [0.22, 1, 0.36, 1] }}
-              className="origin-left mb-8"
-              style={{ height: "3px", width: "48px", background: "#C0392B" }} />
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.56, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row gap-3">
-              <button onClick={() => router.push("/onboarding")}
-                className="font-bold-display uppercase tracking-[.18em] transition-all duration-300
-                           hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(192,57,43,.38)]"
-                style={{ fontSize: "0.77rem", fontWeight: 600, background: "#C0392B", color: "#FFFFFF", padding: "14px 34px", borderRadius: "4px" }}>
-                Commencer mon parcours
-              </button>
-              <button onClick={() => router.push("/login")}
-                className="font-bold-display uppercase tracking-[.18em] transition-all duration-300 hover:bg-gray-50"
-                style={{ fontSize: "0.7rem", fontWeight: 400, color: "#7A6A5A", border: "1px solid #D5CCC0", padding: "14px 26px", borderRadius: "4px" }}>
-                Reprendre mon parcours
-              </button>
-            </motion.div>
           </div>
-          <div className="hidden md:flex justify-center items-center py-8 flex-shrink-0">
+
+          {/* Livre flottant */}
+          <div className="hidden md:flex justify-center items-center flex-shrink-0">
             <BookPresentation />
           </div>
         </div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.32 }}
-          transition={{ delay: 2.0, duration: 1 }}
-          className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
-          style={{ animation: "float 2.6s ease-in-out infinite" } as React.CSSProperties}>
-          <span className="font-bold-display uppercase tracking-[.28em]"
-                style={{ fontSize: "0.54rem", color: "#B0A090" }}>Découvrir</span>
-          <ChevronDown size={13} style={{ color: "#B0A090" }} />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer"
+          onClick={() => galleryRef.current?.scrollIntoView({ behavior: "smooth" })}
+          style={{ position: "absolute" }}
+        >
+          {/* Halo pulsant — apparaît quand le 1er message est terminé */}
+          {discoverReady && (
+            <motion.div
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: [1, 2.2, 1], opacity: [0.55, 0, 0.55] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+              style={{
+                position: "absolute", top: "50%", left: "50%",
+                transform: "translate(-50%,-50%)",
+                width: 52, height: 52, borderRadius: "50%",
+                border: "1px solid rgba(201,168,76,.5)",
+                pointerEvents: "none",
+              }}
+            />
+          )}
+          <motion.span
+            className="font-poppins uppercase"
+            animate={discoverReady
+              ? { opacity: [0.85, 1, 0.85], textShadow: ["0 0 0px transparent", "0 0 12px rgba(201,168,76,.6)", "0 0 0px transparent"] }
+              : { opacity: 0.85 }
+            }
+            transition={discoverReady ? { duration: 2.2, repeat: Infinity, ease: "easeInOut" } : {}}
+            style={{ fontSize: "0.62rem", color: "rgba(201,168,76,1)", letterSpacing: "0.34em" }}
+          >
+            Découvrir
+          </motion.span>
+          <motion.div
+            animate={{ y: discoverReady ? [0, 11, 0] : [0, 7, 0] }}
+            transition={{
+              duration: discoverReady ? 1.5 : 2.8,
+              repeat: Infinity, ease: "easeInOut", delay: 0.3,
+            }}
+            className="flex flex-col items-center mt-2"
+          >
+            <div style={{ width: 1, height: 26, background: `linear-gradient(to bottom,rgba(201,168,76,${discoverReady ? ".8" : ".55"}),transparent)` }} />
+            <ChevronDown size={discoverReady ? 15 : 13} style={{ color: `rgba(201,168,76,${discoverReady ? ".9" : ".55"})`, marginTop: -3 }} />
+          </motion.div>
         </motion.div>
       </section>
 
@@ -283,14 +429,14 @@ export default function LandingPage() {
             {/* ── Section 2 ── */}
             <div style={{ height: "100dvh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <Reveal fromLeft>
-                <span className="font-bold-display uppercase tracking-[.28em] block mb-3"
-                      style={{ fontSize: "0.62rem", color: "#C9A84C" }}>
+                <span className="font-poppins uppercase tracking-[.28em] block mb-3"
+                  style={{ fontSize: "0.62rem", color: "#C9A84C" }}>
                   — La Communauté Royale
                 </span>
               </Reveal>
               <Reveal delay={0.08} fromLeft>
-                <h2 className="font-bold-display leading-[1.0] mb-5"
-                    style={{ fontSize: "clamp(2rem,4.5vw,3.4rem)", fontWeight: 700, color: "#FFFFFF", textTransform: "uppercase" }}>
+                <h2 className="font-poppins leading-[1.0] mb-5"
+                  style={{ fontSize: "clamp(2rem,4.5vw,3.4rem)", fontWeight: 700, color: "#FFFFFF", textTransform: "uppercase" }}>
                   Rejoins une<br />communauté de<br />
                   <span style={{ color: "#C9A84C" }}>femmes sages&nbsp;!</span>
                 </h2>
@@ -300,7 +446,7 @@ export default function LandingPage() {
               </Reveal>
               <Reveal delay={0.18}>
                 <p className="font-serif font-light leading-relaxed mb-7"
-                   style={{ fontSize: "clamp(.95rem,1.6vw,1.1rem)", color: "rgba(255,255,255,.65)", maxWidth: 460 }}>
+                  style={{ fontSize: "clamp(.95rem,1.6vw,1.1rem)", color: "rgba(255,255,255,.65)", maxWidth: 460 }}>
                   Ma reine, conserver un royaume, c'est une affaire de sagesse.
                   Ce parcours autour de mon livre <em>« Les 7 alertes »</em> a été conçu
                   pour toi, afin que ton couple ne soit pas un royaume divisé
@@ -310,29 +456,30 @@ export default function LandingPage() {
               <Reveal delay={0.24}>
                 {/* Avatars — remplacer par de vraies photos dans public/images/ */}
                 <div className="flex items-center gap-3 mb-7">
-                  {/* Pour ajouter de vraies photos : place femme1.webp … femme5.webp dans public/images/ */}
                   <div className="flex -space-x-2.5">
-                    {["femme1","femme2","femme3","femme4","femme5"].map((name, i) => (
+                    {["femme1", "femme2", "femme3", "femme4", "femme5"].map((name, i) => (
                       <div key={i}
-                           style={{ width: 38, height: 38, borderRadius: "50%", flexShrink: 0, overflow: "hidden",
-                                    border: "2px solid #05625C",
-                                    background: `hsl(${20 + i * 18}, 38%, ${32 + i * 7}%)` }}>
-                        <img src={`/images/${name}.webp`} alt=""
-                             draggable={false}
-                             style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                        style={{
+                          width: 38, height: 38, borderRadius: "50%", flexShrink: 0, overflow: "hidden",
+                          border: "2px solid #05625C",
+                          background: `hsl(${20 + i * 18}, 38%, ${32 + i * 7}%)`
+                        }}>
+                        <img src={`/images/${name}.jpg`} alt=""
+                          draggable={false}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                       </div>
                     ))}
                   </div>
                   <p className="font-serif italic"
-                     style={{ fontSize: "0.78rem", color: "rgba(255,255,255,.50)" }}>
+                    style={{ fontSize: "0.78rem", color: "rgba(255,255,255,.50)" }}>
                     + 2 000 reines dans la communauté
                   </p>
                 </div>
               </Reveal>
               <Reveal delay={0.3}>
                 <button onClick={() => router.push("/onboarding")}
-                  className="font-bold-display uppercase tracking-[.18em] transition-all duration-300
+                  className="font-poppins uppercase tracking-[.18em] transition-all duration-300
                              hover:-translate-y-0.5 self-start"
                   style={{ fontSize: "0.72rem", fontWeight: 600, background: "linear-gradient(135deg,#C9A84C,#E8C96A)", color: "#1A0C03", padding: "13px 30px", borderRadius: "100px" }}>
                   Rejoindre →
@@ -342,14 +489,14 @@ export default function LandingPage() {
 
             {/* ── Section 3 ── */}
             <div style={{ height: "100dvh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <span className="font-bold-display uppercase tracking-[.28em] block mb-3"
-                    style={{ fontSize: "0.62rem", color: "rgba(201,168,76,.65)" }}>
+              <span className="font-poppins uppercase tracking-[.28em] block mb-3"
+                style={{ fontSize: "0.62rem", color: "rgba(201,168,76,.65)" }}>
                 — 02 · Le Programme
               </span>
               {/* ref sur le heading = trigger GSAP clipPath */}
               <div ref={s3TriggerRef}>
-                <h2 className="font-bold-display leading-[0.92] mb-4"
-                    style={{ fontSize: "clamp(1.8rem,3.6vw,2.8rem)", fontWeight: 700, color: "#FFFFFF", textTransform: "uppercase" }}>
+                <h2 className="font-poppins leading-[0.92] mb-4"
+                  style={{ fontSize: "clamp(1.8rem,3.6vw,2.8rem)", fontWeight: 700, color: "#FFFFFF", textTransform: "uppercase" }}>
                   Ce qui t'attend dans<br /><span style={{ color: "#C9A84C" }}>la communauté</span>
                 </h2>
               </div>
@@ -359,85 +506,111 @@ export default function LandingPage() {
               <div style={{ display: "flex", gap: 12, alignItems: "stretch" }}>
 
                 {/* Carte 1 : Le programme / le livre */}
-                <div style={{ flex: 1, borderRadius: 14, overflow: "hidden",
-                              background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
-                              display: "flex", flexDirection: "column" }}>
-                  <div style={{ height: 138, overflow: "hidden", position: "relative",
-                                background: "#1A0C10" }}>
+                <div style={{
+                  flex: 1, borderRadius: 14, overflow: "hidden",
+                  background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
+                  display: "flex", flexDirection: "column"
+                }}>
+                  <div style={{
+                    height: 138, overflow: "hidden", position: "relative",
+                    background: "#1A0C10"
+                  }}>
                     <img src="/images/book-cover.png" alt="Les 7 Alertes"
-                         style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
-                         draggable={false} />
-                    <div style={{ position: "absolute", inset: 0,
-                                  background: "linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.5))" }} />
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                      draggable={false} />
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: "linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.5))"
+                    }} />
                   </div>
                   <div style={{ padding: "13px 13px 16px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <p className="font-bold-display uppercase"
-                       style={{ fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
-                                letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35 }}>
+                    <p className="font-poppins uppercase"
+                      style={{
+                        fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
+                        letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35
+                      }}>
                       Un programme pour terminer et appliquer ton livre
                     </p>
                     <p className="font-serif"
-                       style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
+                      style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
                       Un parcours structuré, chapitre par chapitre, pour vivre les enseignements au quotidien.
                     </p>
                   </div>
                 </div>
 
                 {/* Carte 2 : Communauté */}
-                <div style={{ flex: 1, borderRadius: 14, overflow: "hidden",
-                              background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
-                              display: "flex", flexDirection: "column" }}>
-                  <div style={{ height: 138, overflow: "hidden", position: "relative",
-                                background: "linear-gradient(135deg,#3A1A08,#6B3010)",
-                                display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{
+                  flex: 1, borderRadius: 14, overflow: "hidden",
+                  background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
+                  display: "flex", flexDirection: "column"
+                }}>
+                  <div style={{
+                    height: 138, overflow: "hidden", position: "relative",
+                    background: "linear-gradient(135deg,#3A1A08,#6B3010)",
+                    display: "flex", alignItems: "center", justifyContent: "center"
+                  }}>
                     {/* Grille de 4 avatars — remplacer par photo "Maman Lili avec des femmes" */}
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: 12 }}>
-                      {["#8B5E3C","#5A3020","#7A4A30","#9A6A48"].map((bg, i) => (
-                        <div key={i} style={{ width: 44, height: 44, borderRadius: "50%", background: bg,
-                                              display: "flex", alignItems: "center", justifyContent: "center",
-                                              border: "1.5px solid rgba(201,168,76,.25)" }}>
+                      {["#8B5E3C", "#5A3020", "#7A4A30", "#9A6A48"].map((bg, i) => (
+                        <div key={i} style={{
+                          width: 44, height: 44, borderRadius: "50%", background: bg,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          border: "1.5px solid rgba(201,168,76,.25)"
+                        }}>
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,.55)">
-                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
                           </svg>
                         </div>
                       ))}
                     </div>
-                    <div style={{ position: "absolute", inset: 0,
-                                  background: "linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.45))" }} />
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: "linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.45))"
+                    }} />
                   </div>
                   <div style={{ padding: "13px 13px 16px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <p className="font-bold-display uppercase"
-                       style={{ fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
-                                letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35 }}>
+                    <p className="font-poppins uppercase"
+                      style={{
+                        fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
+                        letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35
+                      }}>
                       Une communauté ayant le même objectif que toi
                     </p>
                     <p className="font-serif"
-                       style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
+                      style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
                       Avance avec d'autres reines, partage tes victoires et reste motivée.
                     </p>
                   </div>
                 </div>
 
                 {/* Carte 3 : Maman Lili */}
-                <div style={{ flex: 1, borderRadius: 14, overflow: "hidden",
-                              background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
-                              display: "flex", flexDirection: "column" }}>
-                  <div style={{ height: 138, overflow: "hidden", position: "relative",
-                                background: "#1A0C10" }}>
+                <div style={{
+                  flex: 1, borderRadius: 14, overflow: "hidden",
+                  background: "rgba(0,0,0,.28)", border: "1px solid rgba(255,255,255,.12)",
+                  display: "flex", flexDirection: "column"
+                }}>
+                  <div style={{
+                    height: 138, overflow: "hidden", position: "relative",
+                    background: "#1A0C10"
+                  }}>
                     <img src="/images/Liliane-Sanogo.webp" alt="Lilliane Sanogo"
-                         style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
-                         draggable={false} />
-                    <div style={{ position: "absolute", inset: 0,
-                                  background: "linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.55))" }} />
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                      draggable={false} />
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: "linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.55))"
+                    }} />
                   </div>
                   <div style={{ padding: "13px 13px 16px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <p className="font-bold-display uppercase"
-                       style={{ fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
-                                letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35 }}>
+                    <p className="font-poppins uppercase"
+                      style={{
+                        fontSize: "0.74rem", fontWeight: 700, color: "#FFFFFF",
+                        letterSpacing: "0.04em", marginBottom: 6, lineHeight: 1.35
+                      }}>
                       Un accès privilégié aux conseils de Maman Lili
                     </p>
                     <p className="font-serif"
-                       style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
+                      style={{ fontSize: "0.7rem", color: "rgba(255,255,255,.50)", lineHeight: 1.6 }}>
                       Bénéficie des enseignements exclusifs de Lilliane Sanogo directement dans l'app.
                     </p>
                   </div>
@@ -446,7 +619,7 @@ export default function LandingPage() {
               </div>
 
               <button onClick={() => router.push("/onboarding")}
-                className="font-bold-display uppercase tracking-[.18em] transition-all duration-300
+                className="font-poppins uppercase tracking-[.18em] transition-all duration-300
                            hover:-translate-y-0.5 self-start mt-6"
                 style={{ fontSize: "0.72rem", fontWeight: 600, background: "#C0392B", color: "#FFFFFF", padding: "13px 30px", borderRadius: "100px" }}>
                 Rejoindre →
@@ -471,26 +644,26 @@ export default function LandingPage() {
           >
             {/* Outer frame — fond change via GSAP */}
             <div ref={frameOuterRef}
-                 className="rounded-[28px] p-[14px]"
-                 style={{ background: "#034038", width: 400, maxWidth: "40vw" }}>
+              className="rounded-[28px] p-[14px]"
+              style={{ background: "#034038", width: 400, maxWidth: "40vw" }}>
 
               {/* Inner frame — photos empilées, clipPath reveals */}
               <div className="rounded-[18px] overflow-hidden"
-                   style={{ width: "100%", aspectRatio: "3/4", position: "relative" }}>
+                style={{ width: "100%", aspectRatio: "3/4", position: "relative" }}>
 
                 {/* Photo 1 — section 2 (toujours visible en base) : Lilliane Sanogo */}
                 <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "#1A0C10" }}>
                   <img src="/images/Liliane-Sanogo.webp" alt="Lilliane Sanogo" draggable={false}
-                       style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
                   {/* Dégradé bas pour transition douce */}
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(26,12,16,.75) 0%, transparent 55%)", pointerEvents: "none" }} />
                   <div style={{ position: "absolute", bottom: 22, left: 22, right: 22 }}>
-                    <p className="font-bold-display uppercase tracking-[.18em]"
-                       style={{ fontSize: "0.68rem", color: "#C9A84C", fontWeight: 600 }}>
+                    <p className="font-poppins uppercase tracking-[.18em]"
+                      style={{ fontSize: "0.68rem", color: "#C9A84C", fontWeight: 600 }}>
                       Lilliane Sanogo
                     </p>
                     <p className="font-serif italic"
-                       style={{ fontSize: "0.72rem", color: "rgba(255,255,255,.55)", marginTop: 3 }}>
+                      style={{ fontSize: "0.72rem", color: "rgba(255,255,255,.55)", marginTop: 3 }}>
                       Auteure · Coach conjugale
                     </p>
                   </div>
@@ -498,18 +671,20 @@ export default function LandingPage() {
 
                 {/* Photo 2 — section 3 (révélée par clipPath) : communauté */}
                 <div ref={photo2Ref}
-                     style={{ position: "absolute", inset: 0, zIndex: 2, background: "#1A0E06" }}>
+                  style={{ position: "absolute", inset: 0, zIndex: 2, background: "#1A0E06" }}>
                   <img src="/images/communaité.jpg" alt="Communauté" draggable={false}
-                       style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
-                  <div style={{ position: "absolute", inset: 0,
-                                background: "linear-gradient(to top, rgba(26,8,6,.72) 0%, transparent 55%)" }} />
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to top, rgba(26,8,6,.72) 0%, transparent 55%)"
+                  }} />
                   <div style={{ position: "absolute", bottom: 22, left: 22, right: 22 }}>
-                    <p className="font-bold-display uppercase tracking-[.18em]"
-                       style={{ fontSize: "0.68rem", color: "#C9A84C", fontWeight: 600 }}>
+                    <p className="font-poppins uppercase tracking-[.18em]"
+                      style={{ fontSize: "0.68rem", color: "#C9A84C", fontWeight: 600 }}>
                       La Communauté Royale
                     </p>
                     <p className="font-serif italic"
-                       style={{ fontSize: "0.72rem", color: "rgba(255,255,255,.55)", marginTop: 3 }}>
+                      style={{ fontSize: "0.72rem", color: "rgba(255,255,255,.55)", marginTop: 3 }}>
                       Des femmes sages qui avancent ensemble
                     </p>
                   </div>
@@ -529,170 +704,105 @@ export default function LandingPage() {
       {/* ══════════════════════════════════════════
           SECTION 5 — CTA FINALE
       ══════════════════════════════════════════ */}
-      <section
-        style={{
-          height: "100dvh",
-          background: "linear-gradient(158deg,#0F0205,#250810 50%,#0F0205)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-        className="flex items-center justify-center"
-      >
-        <div className="pointer-events-none absolute inset-0" style={{
-          background: "radial-gradient(ellipse 55% 55% at 50% 62%,rgba(192,57,43,.14),transparent),radial-gradient(ellipse 35% 35% at 50% 0%,rgba(201,168,76,.07),transparent)",
-        }} />
+      <div style={{ position: "relative" }}>
+        <section
+          style={{
+            height: "100dvh",
+            background: "linear-gradient(158deg,#0F0205,#250810 50%,#0F0205)",
+            position: "relative",
+            overflow: "hidden",
+          }}
+          className="flex items-center justify-center"
+        >
+          <div className="pointer-events-none absolute inset-0" style={{
+            background: "radial-gradient(ellipse 55% 55% at 50% 62%,rgba(192,57,43,.14),transparent),radial-gradient(ellipse 35% 35% at 50% 0%,rgba(201,168,76,.07),transparent)",
+          }} />
 
-        {/* ── Filigrane royal ──────────────────────────────── */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 1 }}>
+          {/* Couronne animée — fond section 5 */}
+          <video autoPlay loop muted playsInline className="pointer-events-none"
+            style={{
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%,-50%)", width: "100%", height: "100%",
+              objectFit: "cover", opacity: 0.22, mixBlendMode: "screen", zIndex: 2
+            }}>
+            <source src="/videos/courone.mp4" type="video/mp4" />
+          </video>
+          <div className="pointer-events-none absolute inset-0" style={{
+            zIndex: 2,
+            background: [
+              "radial-gradient(ellipse 78% 78% at 50% 50%,transparent 38%,#0F0205 86%)",
+              "linear-gradient(to bottom,#0F0205 0%,transparent 16%,transparent 84%,#0F0205 100%)",
+              "linear-gradient(to right,#0F0205 0%,transparent 13%,transparent 87%,#0F0205 100%)",
+            ].join(",")
+          }} />
 
-          {/* Fond : motif répété couronne + losange */}
-          <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", opacity:0.028 }} xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="s5royal" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-                <path d="M40 12 L48 30 L60 20 L54 35 L26 35 L20 20 L32 30 Z" fill="none" stroke="#C9A84C" strokeWidth="0.7"/>
-                <circle cx="32" cy="30" r="1" fill="#C9A84C"/>
-                <circle cx="48" cy="30" r="1" fill="#C9A84C"/>
-                <circle cx="40" cy="12" r="1" fill="#C9A84C"/>
-                <path d="M40 44 L46 50 L40 56 L34 50 Z" fill="none" stroke="#C9A84C" strokeWidth="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#s5royal)"/>
-          </svg>
-
-          {/* Grande couronne centrale */}
-          <svg viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)",
-                        width:"clamp(400px,58vw,680px)", opacity:0.055, stroke:"#C9A84C" }}>
-            <path d="M60 170 L60 196 L260 196 L260 170" strokeWidth="1.2"/>
-            <circle cx="84"  cy="183" r="4" strokeWidth="1"/><circle cx="114" cy="183" r="4" strokeWidth="1"/>
-            <circle cx="144" cy="183" r="4" strokeWidth="1"/><circle cx="160" cy="183" r="4" strokeWidth="1"/>
-            <circle cx="176" cy="183" r="4" strokeWidth="1"/><circle cx="206" cy="183" r="4" strokeWidth="1"/>
-            <circle cx="236" cy="183" r="4" strokeWidth="1"/>
-            <path d="M60 170 L82 88 L120 128 L160 46 L200 128 L238 88 L260 170" strokeWidth="1.4"/>
-            <path d="M82 88 Q120 102 120 128" strokeWidth="0.8" strokeDasharray="3,4"/>
-            <path d="M238 88 Q200 102 200 128" strokeWidth="0.8" strokeDasharray="3,4"/>
-            <circle cx="82"  cy="88" r="8"  strokeWidth="1"/><circle cx="238" cy="88" r="8"  strokeWidth="1"/>
-            <circle cx="160" cy="46" r="11" strokeWidth="1.2"/>
-            <path d="M160 30 L160 62 M144 46 L176 46" strokeWidth="1"/>
-            <circle cx="160" cy="30" r="3.5" strokeWidth="0.9"/>
-          </svg>
-
-          {/* Fleur-de-lis haut-gauche */}
-          <svg viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", top:0, left:0, width:155, opacity:0.11, stroke:"#C9A84C", strokeWidth:"0.9" }}>
-            <path d="M20 5 Q27 18 24 30 Q20 37 16 30 Q13 18 20 5"/>
-            <path d="M2 22 Q10 15 20 22 Q22 31 14 35 Q4 30 2 22"/>
-            <path d="M38 22 Q30 15 20 22 Q18 31 26 35 Q36 30 38 22"/>
-            <path d="M14 35 Q20 32 26 35 L27 44 Q20 40 13 44 Z"/>
-            <line x1="20" y1="44" x2="20" y2="62"/>
-            <path d="M0 74 L0 90 M0 74 L26 90" strokeWidth="0.7"/>
-            <path d="M0 82 L13 90" strokeWidth="0.7"/>
-          </svg>
-
-          {/* Fleur-de-lis haut-droit */}
-          <svg viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", top:0, right:0, width:155, opacity:0.11, stroke:"#C9A84C", strokeWidth:"0.9", transform:"scaleX(-1)" }}>
-            <path d="M20 5 Q27 18 24 30 Q20 37 16 30 Q13 18 20 5"/>
-            <path d="M2 22 Q10 15 20 22 Q22 31 14 35 Q4 30 2 22"/>
-            <path d="M38 22 Q30 15 20 22 Q18 31 26 35 Q36 30 38 22"/>
-            <path d="M14 35 Q20 32 26 35 L27 44 Q20 40 13 44 Z"/>
-            <line x1="20" y1="44" x2="20" y2="62"/>
-            <path d="M0 74 L0 90 M0 74 L26 90" strokeWidth="0.7"/>
-            <path d="M0 82 L13 90" strokeWidth="0.7"/>
-          </svg>
-
-          {/* Fleur-de-lis bas-gauche */}
-          <svg viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", bottom:0, left:0, width:155, opacity:0.11, stroke:"#C9A84C", strokeWidth:"0.9", transform:"scaleY(-1)" }}>
-            <path d="M20 5 Q27 18 24 30 Q20 37 16 30 Q13 18 20 5"/>
-            <path d="M2 22 Q10 15 20 22 Q22 31 14 35 Q4 30 2 22"/>
-            <path d="M38 22 Q30 15 20 22 Q18 31 26 35 Q36 30 38 22"/>
-            <path d="M14 35 Q20 32 26 35 L27 44 Q20 40 13 44 Z"/>
-            <line x1="20" y1="44" x2="20" y2="62"/>
-            <path d="M0 74 L0 90 M0 74 L26 90" strokeWidth="0.7"/>
-            <path d="M0 82 L13 90" strokeWidth="0.7"/>
-          </svg>
-
-          {/* Fleur-de-lis bas-droit */}
-          <svg viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", bottom:0, right:0, width:155, opacity:0.11, stroke:"#C9A84C", strokeWidth:"0.9", transform:"scale(-1,-1)" }}>
-            <path d="M20 5 Q27 18 24 30 Q20 37 16 30 Q13 18 20 5"/>
-            <path d="M2 22 Q10 15 20 22 Q22 31 14 35 Q4 30 2 22"/>
-            <path d="M38 22 Q30 15 20 22 Q18 31 26 35 Q36 30 38 22"/>
-            <path d="M14 35 Q20 32 26 35 L27 44 Q20 40 13 44 Z"/>
-            <line x1="20" y1="44" x2="20" y2="62"/>
-            <path d="M0 74 L0 90 M0 74 L26 90" strokeWidth="0.7"/>
-            <path d="M0 82 L13 90" strokeWidth="0.7"/>
-          </svg>
-
-          {/* Sceptre gauche */}
-          <svg viewBox="0 0 20 340" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", left:"6%", top:"50%", transform:"translateY(-50%)",
-                        width:18, height:"62%", opacity:0.12, stroke:"#C9A84C", strokeWidth:"0.8" }}>
-            <circle cx="10" cy="14" r="9" strokeWidth="0.9"/>
-            <path d="M10 5 L10 0 M10 23 L10 316"/>
-            <path d="M10 9 L10 19 M5 14 L15 14" strokeWidth="0.6"/>
-            <circle cx="10" cy="90"  r="3.5" strokeWidth="0.7"/>
-            <circle cx="10" cy="170" r="5"   strokeWidth="0.8"/>
-            <circle cx="10" cy="250" r="3.5" strokeWidth="0.7"/>
-            <path d="M5 316 L10 332 L15 316" strokeWidth="0.8"/>
-          </svg>
-
-          {/* Sceptre droit */}
-          <svg viewBox="0 0 20 340" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style={{ position:"absolute", right:"6%", top:"50%", transform:"translateY(-50%)",
-                        width:18, height:"62%", opacity:0.12, stroke:"#C9A84C", strokeWidth:"0.8" }}>
-            <circle cx="10" cy="14" r="9" strokeWidth="0.9"/>
-            <path d="M10 5 L10 0 M10 23 L10 316"/>
-            <path d="M10 9 L10 19 M5 14 L15 14" strokeWidth="0.6"/>
-            <circle cx="10" cy="90"  r="3.5" strokeWidth="0.7"/>
-            <circle cx="10" cy="170" r="5"   strokeWidth="0.8"/>
-            <circle cx="10" cy="250" r="3.5" strokeWidth="0.7"/>
-            <path d="M5 316 L10 332 L15 316" strokeWidth="0.8"/>
-          </svg>
-
-          {/* "VII" en arrière-plan */}
-          <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", opacity:0.036 }} xmlns="http://www.w3.org/2000/svg">
-            <text x="13%" y="26%" fontFamily="Georgia,serif" fontSize="54" fill="#C9A84C" letterSpacing="6" transform="rotate(-9,13%,26%)">VII</text>
-            <text x="60%" y="74%" fontFamily="Georgia,serif" fontSize="54" fill="#C9A84C" letterSpacing="6" transform="rotate(7,60%,74%)">VII</text>
-          </svg>
-
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center text-center px-8">
-          <Reveal delay={0.1}>
-            <h2 className="font-bold-display leading-[0.9] mb-6"
+          <div className="relative z-10 flex flex-col items-center text-center px-8">
+            <Reveal delay={0.1}>
+              <h2 className="font-poppins leading-[0.9] mb-6"
                 style={{ fontSize: "clamp(2rem,5.5vw,4rem)", fontWeight: 700, textTransform: "uppercase", color: "#FFFFFF" }}>
-              Commence<br /><span style={{ color: "#C9A84C" }}>ton règne</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="mx-auto mb-8"
-                 style={{ width: 48, height: 2, background: "linear-gradient(to right,transparent,#C9A84C,transparent)" }} />
-          </Reveal>
-          <Reveal delay={0.3}>
-            <p className="font-serif font-light italic mb-10 max-w-xs"
-               style={{ fontSize: "1rem", color: "rgba(250,247,239,.44)", lineHeight: 1.75 }}>
-              Plus qu'un livre, une stratégie conçue pour régner.
-            </p>
-          </Reveal>
-          <Reveal delay={0.4}>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button onClick={() => router.push("/onboarding")}
-                className="font-bold-display uppercase tracking-[.2em] transition-all duration-300
+                Commence<br /><span style={{ color: "#C9A84C" }}>ton règne</span>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div className="mx-auto mb-8"
+                style={{ width: 48, height: 2, background: "linear-gradient(to right,transparent,#C9A84C,transparent)" }} />
+            </Reveal>
+            <Reveal delay={0.3}>
+              <p className="font-serif font-light italic mb-10 max-w-xs"
+                style={{ fontSize: "1rem", color: "rgba(250,247,239,.44)", lineHeight: 1.75 }}>
+                Plus qu'un livre, une stratégie conçue pour régner.
+              </p>
+            </Reveal>
+            <Reveal delay={0.4}>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <button onClick={() => router.push("/onboarding")}
+                  className="font-poppins uppercase tracking-[.2em] transition-all duration-300
                            hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(201,168,76,.5)]"
-                style={{ fontSize: "0.76rem", fontWeight: 600, background: "linear-gradient(135deg,#C9A84C,#E8C96A)", color: "#0F0205", padding: "14px 38px", borderRadius: "4px" }}>
-                Bâtir mon royaume
+                  style={{ fontSize: "0.76rem", fontWeight: 600, background: "linear-gradient(135deg,#C9A84C,#E8C96A)", color: "#0F0205", padding: "14px 38px", borderRadius: "4px" }}>
+                  Bâtir mon royaume
+                </button>
+                <button onClick={() => router.push("/login")}
+                  className="font-poppins uppercase tracking-[.18em] transition-all duration-300
+                           hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(201,168,76,.22)]"
+                  style={{ fontSize: "0.7rem", fontWeight: 300, color: "rgba(250,247,239,.48)", border: "1px solid rgba(250,247,239,.17)", padding: "14px 28px", borderRadius: "4px" }}
+                  onMouseEnter={e => { const b = e.currentTarget; b.style.color = "rgba(250,247,239,.88)"; b.style.borderColor = "rgba(250,247,239,.38)"; }}
+                  onMouseLeave={e => { const b = e.currentTarget; b.style.color = "rgba(250,247,239,.48)"; b.style.borderColor = "rgba(250,247,239,.17)"; }}>
+                  J'ai déjà mon royaume
+                </button>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── Footer superposé sur la section 5 ── */}
+        <footer style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 20,
+          background: "rgba(10,1,4,0.14)", backdropFilter: "blur(2px)"
+        }}>
+          <div className="w-full max-w-7xl mx-auto px-6 md:px-14 py-5
+                        flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="font-poppins uppercase tracking-[.22em]"
+              style={{ fontSize: "0.55rem", color: "rgba(250,247,239,.28)" }}>
+              Copyright © 2026 · All rights reserved.
+            </span>
+            <nav className="flex items-center gap-5">
+              <button className="font-poppins uppercase tracking-[.18em]"
+                style={{ fontSize: "0.55rem", color: "rgba(250,247,239,.28)", background: "none", border: "none", cursor: "pointer", transition: "color .2s" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#C9A84C")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(250,247,239,.28)")}>
+                Politique de confidentialité
               </button>
-              <button onClick={() => router.push("/login")}
-                className="font-bold-display uppercase tracking-[.18em] transition-all duration-300"
-                style={{ fontSize: "0.7rem", fontWeight: 300, color: "rgba(250,247,239,.48)", border: "1px solid rgba(250,247,239,.17)", padding: "14px 28px", borderRadius: "4px" }}>
-                J'ai déjà mon royaume
+              <span style={{ color: "rgba(201,168,76,.22)", fontSize: "0.7rem" }}>·</span>
+              <button className="font-poppins uppercase tracking-[.18em]"
+                style={{ fontSize: "0.55rem", color: "rgba(250,247,239,.28)", background: "none", border: "none", cursor: "pointer", transition: "color .2s" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#C9A84C")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(250,247,239,.28)")}>
+                Mentions légales
               </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </nav>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

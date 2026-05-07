@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { loadProfile } from "@/lib/supabase/profile";
 import { useAppStore } from "@/store/useAppStore";
-import { CrownSvg } from "@/components/ui/CrownSvg";
-import type React from "react";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -79,15 +77,18 @@ export default function LoginPage() {
           }}>
           ← Accueil
         </button>
-        <div className="relative z-10 text-center max-w-xs">
-          <CrownSvg
-            id="login-crown"
-            width={120}
-            height={90}
-            className="mx-auto drop-shadow-[0_0_48px_rgba(201,168,76,.65)]"
-            style={{ animation: "float 4s ease-in-out infinite" } as React.CSSProperties}
-          />
-        </div>
+        <video autoPlay loop muted playsInline className="pointer-events-none"
+          style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)",
+                   width:"100%", height:"100%", objectFit:"cover", opacity:0.22,
+                   mixBlendMode:"screen", zIndex:0 }}>
+          <source src="/videos/courone.mp4" type="video/mp4" />
+        </video>
+        <div className="pointer-events-none absolute inset-0" style={{ zIndex:0,
+          background:[
+            "radial-gradient(ellipse 78% 78% at 50% 50%,transparent 38%,#0F0205 86%)",
+            "linear-gradient(to bottom,#0F0205 0%,transparent 16%,transparent 84%,#0F0205 100%)",
+            "linear-gradient(to right,#0F0205 0%,transparent 13%,transparent 87%,#0F0205 100%)",
+          ].join(",") }} />
       </div>
 
       {/* ── Formulaire ────────────────────────────────────────── */}
@@ -112,10 +113,10 @@ export default function LoginPage() {
             Reprendre mon parcours
           </p>
           <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-2">
-            Bienvenue<br /><em className="text-forest italic">de retour, Reine</em>
+            Ton royaume<br /><em className="text-forest italic">t'attendait !</em>
           </h2>
           <p className="text-sm text-tl leading-relaxed mb-8">
-            Ta progression t'attend là où tu l'as laissée.
+            Je suis heureuse de te revoir ma Reine
           </p>
 
           <label className="font-display text-[.62rem] tracking-[.2em] uppercase text-tm mb-2 block">
