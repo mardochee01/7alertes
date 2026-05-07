@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -59,7 +59,7 @@ export function ShareSlide({ chapter }: Props) {
       key="share"
       initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
       className="flex-1 flex flex-col items-center px-6 py-8 overflow-y-auto relative"
-      style={{ background: "linear-gradient(160deg,#1A3A2A,#0D2518)" }}
+      style={{ background: "linear-gradient(160deg,#250810,#0D2518)" }}
     >
       <div className="absolute inset-0 pointer-events-none"
            style={{ background: "radial-gradient(ellipse 70% 70% at 50% 100%,rgba(201,168,76,.18),transparent 55%)" }} />

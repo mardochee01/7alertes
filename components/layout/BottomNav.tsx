@@ -15,7 +15,7 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-black/[.06]
-                    shadow-[0_-4px_18px_rgba(13,31,21,.06)] pb-[env(safe-area-inset-bottom)]">
+                    shadow-[0_-4px_18px_rgba(15,2,5,.06)] pb-[env(safe-area-inset-bottom)]">
       <div className="flex justify-around px-2 py-1.5">
         {NAV_ITEMS.map(({ href, icon, label }) => {
           const active = pathname.startsWith(href);

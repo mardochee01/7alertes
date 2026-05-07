@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import type { Chapter } from "@/types";
@@ -12,7 +12,7 @@ export function LiliSlide({ chapter, kName }: Props) {
       key="lili"
       initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
       className="flex-1 flex flex-col justify-center items-center text-center px-6 py-8 relative overflow-y-auto"
-      style={{ background: "linear-gradient(160deg,#0A2015,#1A3A2A)" }}
+      style={{ background: "linear-gradient(160deg,#0A2015,#250810)" }}
     >
       <div className="absolute inset-0 pointer-events-none"
            style={{ background: "radial-gradient(ellipse 80% 80% at 50% 100%,rgba(201,168,76,.16),transparent 60%)" }} />

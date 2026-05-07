@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function SpiritualPage() {
     <div className="min-h-screen bg-ivory pb-20">
       {/* Hero */}
       <div className="relative overflow-hidden pb-10"
-           style={{ background: "linear-gradient(160deg,#0D1F15,#1A3A2A)" }}>
+           style={{ background: "linear-gradient(160deg,#0F0205,#250810)" }}>
         <div className="absolute inset-0"
              style={{ background: "radial-gradient(ellipse 70% 80% at 50% 110%,rgba(201,168,76,.14),transparent 60%)" }} />
         <div className="relative z-10 px-5 pt-5 mb-5">
@@ -41,9 +41,9 @@ export default function SpiritualPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
             onClick={() => toast(`${s.title} — disponible dans la version complète ✦`)}
-            className="bg-white rounded-[13px] p-4 shadow-[0_2px_12px_rgba(13,31,21,.07)]
+            className="bg-white rounded-[13px] p-4 shadow-[0_2px_12px_rgba(15,2,5,.07)]
                        cursor-pointer transition-all hover:-translate-y-0.5
-                       hover:shadow-[0_8px_22px_rgba(13,31,21,.11)]"
+                       hover:shadow-[0_8px_22px_rgba(15,2,5,.11)]"
           >
             <p className="font-display text-[.58rem] tracking-[.24em] uppercase text-gold mb-1.5">
               {s.type}

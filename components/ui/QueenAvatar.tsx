@@ -1,4 +1,4 @@
-interface QueenAvatarProps {
+﻿interface QueenAvatarProps {
   size?: number;
   className?: string;
 }
@@ -89,8 +89,8 @@ export function QueenAvatar({ size = 96, className = "" }: QueenAvatarProps) {
 
       <defs>
         <radialGradient id="bg" cx="50%" cy="30%" r="70%">
-          <stop offset="0%" stopColor="#2D5A3D" />
-          <stop offset="100%" stopColor="#0D1F15" />
+          <stop offset="0%" stopColor="#4A0F1A" />
+          <stop offset="100%" stopColor="#0F0205" />
         </radialGradient>
         <linearGradient id="dress" x1="50" y1="76" x2="50" y2="100" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="#C9A84C" />

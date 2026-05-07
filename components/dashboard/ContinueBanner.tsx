@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/useAppStore";
@@ -24,7 +24,7 @@ export function ContinueBanner() {
       onClick={() => router.push(`/chapter/${currentChap}`)}
       className="flex items-center justify-between rounded-[14px] px-5 py-4 mb-3 cursor-pointer
                  transition-all hover:-translate-y-0.5"
-      style={{ background: "linear-gradient(135deg,#2D5A3D,#4A7A5A)" }}
+      style={{ background: "linear-gradient(135deg,#4A0F1A,#7A1828)" }}
     >
       <div>
         <p className="font-display text-[.58rem] tracking-[.2em] uppercase text-gold-p mb-1">

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
@@ -75,7 +75,7 @@ export function DailyMessage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
       className="relative rounded-[14px] p-5 overflow-hidden mb-3"
-      style={{ background: "linear-gradient(135deg,#1A3A2A 0%,#243D2E 100%)" }}
+      style={{ background: "linear-gradient(135deg,#250810 0%,#243D2E 100%)" }}
     >
       {/* Guillemet décoratif */}
       <span className="absolute top-[-1.1rem] left-1 font-serif text-[6.5rem] leading-none

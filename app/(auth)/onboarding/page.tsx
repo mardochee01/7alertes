@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -113,9 +113,27 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-ivory grid md:grid-cols-2">
       {/* ── Côté visuel ───────────────────────────────────────── */}
       <div className="hidden md:flex relative flex-col items-center justify-center p-12 overflow-hidden"
-           style={{ background: "linear-gradient(160deg,#1A3A2A,#0D1F15)" }}>
+           style={{ background: "linear-gradient(160deg,#250810,#0F0205)" }}>
         <div className="absolute inset-0"
              style={{ background: "radial-gradient(ellipse 100% 100% at 50% 110%,rgba(201,168,76,.18),transparent 60%)" }} />
+        <button onClick={() => router.push("/")}
+          className="absolute top-6 left-6 z-20 font-display text-[.68rem] tracking-[.18em] uppercase
+                     transition-all duration-300"
+          style={{ padding: "7px 16px", borderRadius: 100,
+                   border: "1px solid rgba(201,168,76,.25)", background: "transparent",
+                   color: "rgba(255,255,255,.45)" }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = "rgba(201,168,76,.12)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,168,76,.65)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.92)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,168,76,.25)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.45)";
+          }}>
+          ← Accueil
+        </button>
         <div className="relative z-10 text-center">
           <CrownSvg id="onb" width={72} height={54}
                     className="mx-auto drop-shadow-[0_0_20px_rgba(201,168,76,.5)]" />
@@ -136,11 +154,22 @@ export default function OnboardingPage() {
 
       {/* ── Formulaire ────────────────────────────────────────── */}
       <div className="flex flex-col justify-center px-8 py-14 md:px-12 bg-ivory">
+        {/* Retour accueil — mobile uniquement */}
+        <button onClick={() => router.push("/")}
+          className="md:hidden self-start mb-6 font-display text-[.68rem] tracking-[.18em] uppercase
+                     transition-all duration-300"
+          style={{ padding: "7px 16px", borderRadius: 100,
+                   border: "1px solid rgba(44,26,14,.18)", background: "transparent",
+                   color: "rgba(44,26,14,.45)" }}
+          onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(201,168,76,.10)"; b.style.borderColor = "rgba(201,168,76,.5)"; b.style.color = "#1A1008"; }}
+          onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "transparent"; b.style.borderColor = "rgba(44,26,14,.18)"; b.style.color = "rgba(44,26,14,.45)"; }}>
+          ← Accueil
+        </button>
         {/* Dots */}
         <div className="flex gap-1.5 mb-8">
           {STEPS.map((_, i) => (
             <div key={i} className="w-[7px] h-[7px] rounded-full transition-colors duration-300"
-                 style={{ background: i < step ? "#2D5A3D" : i === step ? "#C9A84C" : "rgba(44,26,14,.11)" }} />
+                 style={{ background: i < step ? "#4A0F1A" : i === step ? "#C9A84C" : "rgba(44,26,14,.11)" }} />
           ))}
         </div>
 
@@ -148,7 +177,7 @@ export default function OnboardingPage() {
           {/* ── Step 0 : prénom reine ── */}
           {step === 0 && (
             <motion.div key="s0"
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[0].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
@@ -165,14 +194,25 @@ export default function OnboardingPage() {
               <p className="text-[.76rem] text-tl mb-5">Celui qui orne ta couronne</p>
               {error && <p className="text-danger text-sm mb-3">{error}</p>}
               <button onClick={handleStep0} className={btnPrimary}>Continuer →</button>
-              <button onClick={() => router.push("/")} className={btnBack}>← Retour à l'accueil</button>
+
+              <div className="flex items-center gap-3 my-5">
+                <div className="flex-1 h-px bg-black/8" />
+                <span className="text-[.72rem] text-tl">ou</span>
+                <div className="flex-1 h-px bg-black/8" />
+              </div>
+
+              <button onClick={() => router.push("/login")}
+                className="w-full text-sm text-center text-tl hover:text-td transition-colors font-sans">
+                Déjà un compte ?{" "}
+                <span className="text-gold font-medium">Reprendre mon parcours →</span>
+              </button>
             </motion.div>
           )}
 
           {/* ── Step 1 : prénom roi ── */}
           {step === 1 && (
             <motion.div key="s1"
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[1].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
@@ -195,7 +235,7 @@ export default function OnboardingPage() {
           {/* ── Step 2 : nom du royaume ── */}
           {step === 2 && (
             <motion.div key="s2"
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[2].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-3">
@@ -222,7 +262,7 @@ export default function OnboardingPage() {
           {/* ── Step 3 : compte email/mdp ── */}
           {step === 3 && (
             <motion.div key="s3"
-              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -28 }}
               transition={{ duration: 0.35, ease: EASE }}>
               <p className="font-display text-[.62rem] tracking-[.35em] uppercase text-gold mb-6">{STEPS[3].label}</p>
               <h2 className="font-serif text-[2.3rem] font-normal text-td leading-[1.2] mb-2">

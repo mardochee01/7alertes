@@ -65,7 +65,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-3 bg-white rounded-[14px] shadow-[0_2px_18px_rgba(13,31,21,.07)] overflow-hidden"
+          className="mt-3 bg-white rounded-[14px] shadow-[0_2px_18px_rgba(15,2,5,.07)] overflow-hidden"
         >
           <CalendarStrip />
           <div className="border-t border-black/5">
@@ -77,7 +77,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-3 bg-white rounded-[14px] shadow-[0_2px_18px_rgba(13,31,21,.07)] overflow-hidden"
+          className="mt-3 bg-white rounded-[14px] shadow-[0_2px_18px_rgba(15,2,5,.07)] overflow-hidden"
         >
           <div className="flex items-center justify-between px-5 py-3 border-b border-black/5">
             <span className="font-display text-[.6rem] tracking-[.22em] uppercase text-tl">

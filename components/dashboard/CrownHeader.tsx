@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -137,7 +137,7 @@ export function CrownHeader() {
 
   return (
     <div className="relative overflow-hidden pb-10"
-         style={{ background: "linear-gradient(160deg,#0D1F15,#1A3A2A)" }}>
+         style={{ background: "linear-gradient(160deg,#0F0205,#250810)" }}>
       {/* Glow */}
       <div className="absolute inset-0 pointer-events-none"
            style={{ background: "radial-gradient(ellipse 80% 100% at 85% 100%,rgba(201,168,76,.11),transparent 60%)" }} />

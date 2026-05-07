@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -58,9 +58,27 @@ export default function LoginPage() {
     <div className="min-h-screen bg-ivory grid md:grid-cols-2">
       {/* ── Côté visuel ───────────────────────────────────────── */}
       <div className="hidden md:flex relative flex-col items-center justify-center p-12 overflow-hidden"
-        style={{ background: "linear-gradient(160deg,#1A3A2A,#0D1F15)" }}>
+        style={{ background: "linear-gradient(160deg,#250810,#0F0205)" }}>
         <div className="absolute inset-0"
           style={{ background: "radial-gradient(ellipse 100% 100% at 50% 110%,rgba(201,168,76,.18),transparent 60%)" }} />
+        <button onClick={() => router.push("/")}
+          className="absolute top-6 left-6 z-20 font-display text-[.68rem] tracking-[.18em] uppercase
+                     transition-all duration-300"
+          style={{ padding: "7px 16px", borderRadius: 100,
+                   border: "1px solid rgba(201,168,76,.25)", background: "transparent",
+                   color: "rgba(255,255,255,.45)" }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = "rgba(201,168,76,.12)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,168,76,.65)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.92)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(201,168,76,.25)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.45)";
+          }}>
+          ← Accueil
+        </button>
         <div className="relative z-10 text-center max-w-xs">
           <CrownSvg
             id="login-crown"
@@ -74,6 +92,17 @@ export default function LoginPage() {
 
       {/* ── Formulaire ────────────────────────────────────────── */}
       <div className="flex flex-col justify-center px-8 py-14 md:px-12 bg-ivory">
+        {/* Retour accueil — mobile uniquement */}
+        <button onClick={() => router.push("/")}
+          className="md:hidden self-start mb-6 font-display text-[.68rem] tracking-[.18em] uppercase
+                     transition-all duration-300"
+          style={{ padding: "7px 16px", borderRadius: 100,
+                   border: "1px solid rgba(44,26,14,.18)", background: "transparent",
+                   color: "rgba(44,26,14,.45)" }}
+          onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(201,168,76,.10)"; b.style.borderColor = "rgba(201,168,76,.5)"; b.style.color = "#1A1008"; }}
+          onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "transparent"; b.style.borderColor = "rgba(44,26,14,.18)"; b.style.color = "rgba(44,26,14,.45)"; }}>
+          ← Accueil
+        </button>
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -141,12 +170,6 @@ export default function LoginPage() {
             Pas encore de compte ? <span className="text-gold font-medium">Commencer mon parcours →</span>
           </button>
 
-          <button
-            onClick={() => router.push("/")}
-            className="w-full mt-3 text-sm text-tl hover:text-td transition-colors text-center block"
-          >
-            ← Retour à l'accueil
-          </button>
         </motion.div>
       </div>
     </div>

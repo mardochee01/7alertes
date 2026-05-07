@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,7 +42,7 @@ export function GameSlide({ chapter, kName, onNext }: Props) {
       key="game"
       initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
       className="flex-1 flex flex-col px-6 py-6 overflow-y-auto relative"
-      style={{ background: "linear-gradient(160deg,#050F08,#0D1F15)" }}
+      style={{ background: "linear-gradient(160deg,#050F08,#0F0205)" }}
     >
       <div className="absolute inset-0 pointer-events-none"
            style={{ background: "radial-gradient(ellipse 60% 60% at 80% 20%,rgba(201,168,76,.08),transparent 60%)" }} />

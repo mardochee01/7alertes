@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,7 @@ export function CalendarStrip() {
           let textColor = "#8C7A60";
 
           if (isToday) { bg = "rgba(201,168,76,.15)"; border = "#C9A84C"; textColor = "#C9A84C"; }
-          else if (isDone) { bg = "rgba(45,90,61,.1)"; border = "rgba(45,90,61,.2)"; textColor = "#2D5A3D"; }
+          else if (isDone) { bg = "rgba(74,15,26,.1)"; border = "rgba(74,15,26,.2)"; textColor = "#4A0F1A"; }
           else if (!avail && sch.type === "chapter" && sch.day > d) opacity = 0.38;
 
           function handleClick() {

@@ -1,4 +1,4 @@
-import { CHAP_DAYS, SCHEDULE } from "@/lib/data/schedule";
+﻿import { CHAP_DAYS, SCHEDULE } from "@/lib/data/schedule";
 import { CHAPTERS } from "@/lib/data/chapters";
 
 export const today = () => new Date().toISOString().slice(0, 10);
@@ -54,7 +54,7 @@ export function currentQuoteIndex() {
 }
 
 export function chapColor(num: number): string {
-  const colors = ["#2D5A3D", "#A8882A", "#4A7A5A", "#1A3A2A"];
+  const colors = ["#4A0F1A", "#A8882A", "#7A1828", "#250810"];
   return colors[num % colors.length];
 }
 

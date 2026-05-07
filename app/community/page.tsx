@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,7 +32,7 @@ type FeedPost = {
   comments: FeedComment[];
 };
 
-const COLORS = ["#2D5A3D", "#A8882A", "#4A7A5A", "#1A3A2A"];
+const COLORS = ["#4A0F1A", "#A8882A", "#7A1828", "#250810"];
 
 // ── Avatar ────────────────────────────────────────────────────────────────────
 
@@ -79,7 +79,7 @@ function PostCard({
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[13px] p-4 shadow-[0_2px_14px_rgba(13,31,21,.07)]">
+                className="bg-white rounded-[13px] p-4 shadow-[0_2px_14px_rgba(15,2,5,.07)]">
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-3">
         <Avatar photo={post.photo} name={post.name} col={post.col} />
@@ -126,7 +126,7 @@ function PostCard({
             <div className="pt-3 border-t border-black/5 mt-2 flex flex-col gap-3">
               {post.comments.map((c) => (
                 <div key={c.id} className="flex gap-2">
-                  <Avatar photo={c.photo} name={c.name} col="#2D5A3D" size={26} />
+                  <Avatar photo={c.photo} name={c.name} col="#4A0F1A" size={26} />
                   <div className="flex-1 bg-cream rounded-xl rounded-tl-sm px-3 py-2">
                     <p className="text-[.68rem] font-semibold text-tm mb-0.5">{c.name}</p>
                     <p className="font-serif text-[.93rem] text-td leading-[1.4]">{c.text}</p>
@@ -350,7 +350,7 @@ export default function CommunityPage() {
     setPosts((prev) => [{
       id: tempId, authorId: userId,
       name: qName, photo: profilePhoto || null,
-      col: "#2D5A3D", chap: `Chapitre ${chapNum}`, text: t,
+      col: "#4A0F1A", chap: `Chapitre ${chapNum}`, text: t,
       time: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
       likes: 0, likedByMe: false, comments: [],
     }, ...prev]);
@@ -376,7 +376,7 @@ export default function CommunityPage() {
   return (
     <div className="min-h-screen bg-ivory pb-20">
       <div className="relative overflow-hidden pb-10"
-           style={{ background: "linear-gradient(160deg,#0D1F15,#1A3A2A)" }}>
+           style={{ background: "linear-gradient(160deg,#0F0205,#250810)" }}>
         <div className="absolute inset-0"
              style={{ background: "radial-gradient(ellipse 70% 80% at 80% 100%,rgba(201,168,76,.11),transparent 60%)" }} />
         <div className="relative z-10 px-5 pt-5 mb-5">
@@ -398,7 +398,7 @@ export default function CommunityPage() {
 
       <div className="px-4 -mt-5 relative z-10">
         {/* Input publication */}
-        <div className="bg-white rounded-[13px] shadow-[0_2px_14px_rgba(13,31,21,.07)] p-4 mb-3">
+        <div className="bg-white rounded-[13px] shadow-[0_2px_14px_rgba(15,2,5,.07)] p-4 mb-3">
           <textarea value={postText} onChange={(e) => setPostText(e.target.value)}
                     placeholder="Partage une victoire, une réflexion, un encouragement… 💛"
                     rows={3}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -286,7 +286,7 @@ export default function AdminCommunity() {
                       {/* Avatar commentateur */}
                       <div className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center
                                       text-ivory text-[.6rem] font-serif font-bold mt-0.5"
-                           style={{ background: "linear-gradient(135deg,#2D5A3D,#4A7A5A)" }}>
+                           style={{ background: "linear-gradient(135deg,#4A0F1A,#7A1828)" }}>
                         {c.author.charAt(0)}
                       </div>
 

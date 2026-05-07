@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useRef } from "react";
 import {
@@ -265,7 +265,7 @@ export default function AdminQuestions() {
                   <div className="flex items-start gap-2 flex-row-reverse group">
                     <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center
                                     text-ivory text-[.7rem] font-serif font-bold"
-                         style={{ background: "linear-gradient(135deg,#1A3A2A,#2D5A3D)" }}>
+                         style={{ background: "linear-gradient(135deg,#250810,#4A0F1A)" }}>
                       L
                     </div>
                     <div className="flex-1 flex flex-col items-end">
@@ -308,7 +308,7 @@ export default function AdminQuestions() {
                         </div>
                       ) : (
                         <div className="max-w-[80%] rounded-2xl rounded-tr-sm px-4 py-2.5"
-                             style={{ background: "linear-gradient(135deg,#1A3A2A,#2D5A3D)" }}>
+                             style={{ background: "linear-gradient(135deg,#250810,#4A0F1A)" }}>
                           <p className="font-serif italic text-[.95rem] text-ivory/90 leading-relaxed">{m.reply}</p>
                           {/* Actions modifier / supprimer réponse */}
                           <div className="flex gap-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">

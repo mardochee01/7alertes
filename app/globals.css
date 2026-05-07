@@ -1,29 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 @theme {
   /* ── Brand palette ── */
-  --color-gold:   #C9A84C;
-  --color-gold-l: #E8C96A;
-  --color-gold-p: #F5E4B0;
-  --color-dg:     #1A3A2A;
-  --color-forest: #2D5A3D;
-  --color-sage:   #4A7A5A;
-  --color-cream:  #F5EDD8;
-  --color-ivory:  #FAF7EF;
-  --color-dark:   #0D1F15;
-  --color-td:     #2C1A0E;
-  --color-tm:     #5C4A30;
-  --color-tl:     #8C7A60;
-  --color-blush:  #F2E4D0;
-  --color-danger: #C0392B;
-  --color-ok:     #2D8A5A;
-  --color-warn:   #C87A20;
+  --color-gold:    #C9A84C;
+  --color-gold-l:  #E8C96A;
+  --color-gold-p:  #F5E4B0;
+  --color-crimson: #C0392B;
+  --color-dg:      #250810;
+  --color-forest:  #4A0F1A;
+  --color-sage:    #7A1828;
+  --color-cream:   #F5EDD8;
+  --color-ivory:   #FAF7EF;
+  --color-dark:    #0F0205;
+  --color-td:      #2C1A0E;
+  --color-tm:      #5C4A30;
+  --color-tl:      #8C7A60;
+  --color-blush:   #F2E4D0;
+  --color-danger:  #C0392B;
+  --color-ok:      #2D8A5A;
+  --color-warn:    #C87A20;
 
   /* ── Typography ── */
   --font-serif:   "Cormorant Garamond", Georgia, serif;
   --font-display: "Cinzel", "Times New Roman", serif;
   --font-sans:    "Jost", system-ui, sans-serif;
+  --font-bold:    "Oswald", "Arial Narrow", sans-serif;
 
   /* ── Animations ── */
   @keyframes float {

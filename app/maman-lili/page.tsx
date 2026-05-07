@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -124,7 +124,7 @@ export default function MamanLiliPage() {
     <div className="min-h-screen bg-ivory pb-24">
       {/* Hero */}
       <div className="relative overflow-hidden pb-10"
-           style={{ background: "linear-gradient(160deg,#1A3A2A,#0D1F15)" }}>
+           style={{ background: "linear-gradient(160deg,#250810,#0F0205)" }}>
         <div className="absolute inset-0"
              style={{ background: "radial-gradient(ellipse 60% 80% at 50% 100%,rgba(201,168,76,.17),transparent 55%)" }} />
         <div className="relative z-10 px-5 pt-5 mb-5">
@@ -136,7 +136,7 @@ export default function MamanLiliPage() {
         <div className="relative z-10 text-center px-5">
           <div className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-[1.7rem]
                           shadow-[0_0_28px_rgba(201,168,76,.32)]"
-               style={{ background: "linear-gradient(135deg,#C9A84C,#2D5A3D)" }}>
+               style={{ background: "linear-gradient(135deg,#C9A84C,#4A0F1A)" }}>
             👑
           </div>
           <h1 className="font-serif font-light text-ivory text-[1.9rem] leading-[1.2] mb-1">
@@ -150,7 +150,7 @@ export default function MamanLiliPage() {
 
       <div className="px-4 -mt-5 relative z-10">
         {/* Zone de chat */}
-        <div className="bg-white rounded-[13px] shadow-[0_2px_16px_rgba(13,31,21,.07)] mb-3 overflow-hidden">
+        <div className="bg-white rounded-[13px] shadow-[0_2px_16px_rgba(15,2,5,.07)] mb-3 overflow-hidden">
           <div ref={msgsRef}
                className="flex flex-col gap-3.5 p-4 max-h-[420px] overflow-y-auto scroll-smooth">
 
@@ -158,7 +158,7 @@ export default function MamanLiliPage() {
             <div className="max-w-[86%] self-start">
               <p className="font-display text-[.62rem] tracking-[.14em] uppercase text-gold mb-1">Maman Lili</p>
               <div className="px-4 py-3 rounded-[13px] rounded-tl-sm font-serif text-[1rem] leading-[1.6] text-ivory"
-                   style={{ background: "linear-gradient(135deg,#1A3A2A,#2D5A3D)" }}>
+                   style={{ background: "linear-gradient(135deg,#250810,#4A0F1A)" }}>
                 Ma reine, je suis là. Pose-moi ta question librement, pas de jugement ici, seulement de l'amour, de la sagesse et de la vérité. Ton cœur peut parler. 💛
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function MamanLiliPage() {
                                    ? "border border-gold/20 text-ivory/70 italic rounded-[13px] rounded-tl-sm"
                                    : "text-ivory rounded-[13px] rounded-tl-sm"}`}
                   style={m.role === "lili" && !m.pending
-                    ? { background: "linear-gradient(135deg,#1A3A2A,#2D5A3D)" }
+                    ? { background: "linear-gradient(135deg,#250810,#4A0F1A)" }
                     : m.role === "lili" && m.pending
                     ? { background: "rgba(201,168,76,.06)" }
                     : undefined}
@@ -224,7 +224,7 @@ export default function MamanLiliPage() {
         </div>
 
         {/* FAQ */}
-        <div className="bg-white rounded-[13px] shadow-[0_2px_14px_rgba(13,31,21,.07)] p-4">
+        <div className="bg-white rounded-[13px] shadow-[0_2px_14px_rgba(15,2,5,.07)] p-4">
           <p className="font-display text-[.58rem] tracking-[.22em] uppercase text-tl mb-3">
             Questions fréquentes
           </p>

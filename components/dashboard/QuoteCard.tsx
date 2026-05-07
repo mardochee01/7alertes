@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { QUOTES } from "@/lib/data/schedule";
@@ -37,7 +37,7 @@ export function QuoteCard({ dayIndex }: QuoteCardProps) {
 
   return (
     <div className="relative rounded-[14px] p-5 overflow-hidden"
-         style={{ background: "linear-gradient(135deg,#1A3A2A 0%,#243D2E 100%)" }}>
+         style={{ background: "linear-gradient(135deg,#250810 0%,#243D2E 100%)" }}>
       {/* decorative quote mark */}
       <span className="absolute top-[-1.1rem] left-1 font-serif text-[6.5rem] leading-none
                        text-gold/[.13] font-bold select-none pointer-events-none">

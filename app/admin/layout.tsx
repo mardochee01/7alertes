@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -88,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* ── Barre mobile (top) ─────────────────────────────────── */}
       <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-white/6 flex-shrink-0"
-              style={{ background: "linear-gradient(180deg,#0D1F15,#0A1810)" }}>
+              style={{ background: "linear-gradient(180deg,#0F0205,#0A1810)" }}>
         <div>
           <p className="font-display text-[.55rem] tracking-[.25em] uppercase text-gold/60">Admin Panel</p>
           <p className="font-serif text-ivory text-[.95rem] font-light leading-none mt-0.5">Maman Lili</p>
@@ -139,7 +139,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* ── Sidebar desktop ─────────────────────────────────────── */}
       <aside className="hidden md:flex w-56 flex-shrink-0 border-r border-white/6 flex-col"
-             style={{ background: "linear-gradient(180deg,#0D1F15,#0A1810)" }}>
+             style={{ background: "linear-gradient(180deg,#0F0205,#0A1810)" }}>
         <div className="px-5 py-5 border-b border-white/6">
           <p className="font-display text-[.6rem] tracking-[.3em] uppercase text-gold/70 mb-0.5">
             Admin Panel

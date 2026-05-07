@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import type { Chapter } from "@/types";
@@ -12,7 +12,7 @@ export function WhySlide({ chapter, kName }: Props) {
       key="why"
       initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
       className="flex-1 flex flex-col justify-center px-6 py-8 relative overflow-y-auto"
-      style={{ background: "linear-gradient(160deg,#0D1F15,#1A3A2A)" }}
+      style={{ background: "linear-gradient(160deg,#0F0205,#250810)" }}
     >
       <div className="absolute inset-0 pointer-events-none"
            style={{ background: "radial-gradient(ellipse 70% 60% at 30% 80%,rgba(201,168,76,.1),transparent 60%)" }} />
