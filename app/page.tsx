@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, User } from "lucide-react";
 import { ToastProvider } from "@/components/ui/Toast";
 import Lenis from "lenis";
 import { gsap } from "gsap";
@@ -22,6 +22,140 @@ const FEATURES = [
   { Icon: Sparkles, label: "Maman Lili IA",        desc: "Une IA inspirée des enseignements de Lilliane Sanogo" },
   { Icon: Users,    label: "Communauté",           desc: "Partage et avance avec d'autres reines"       },
 ]; */
+
+/* ─────────────────────────────────────────
+   Navbar fixe
+───────────────────────────────────────── */
+function Navbar() {
+  const router = useRouter();
+  const [scrolled,  setScrolled]  = useState(false);
+  const [menuOpen,  setMenuOpen]  = useState(false);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  const links = [
+    { label: "Accueil",   id: "hero-section"    },
+    { label: "Parcours",  id: "gallery-section" },
+    { label: "Rejoindre", id: "cta-section"     },
+  ];
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  return (
+    <>
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        height: 68,
+        padding: "0 clamp(16px,4vw,56px)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        background: scrolled ? "rgba(10,1,3,.94)" : "transparent",
+        backdropFilter: scrolled ? "blur(14px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(201,168,76,.1)" : "none",
+        transition: "background .4s,backdrop-filter .4s,border .4s",
+      }}>
+        {/* Logo — décommenter quand nécessaire
+        <button onClick={() => scrollTo("hero-section")}
+          style={{ display:"flex", alignItems:"center", gap:10, background:"none", border:"none", cursor:"pointer" }}>
+          <span style={{ fontSize:"1.5rem", lineHeight:1, color:"#C9A84C" }}>♛</span>
+          <div style={{ textAlign:"left" }}>
+            <div className="font-display" style={{ fontSize:".48rem", letterSpacing:".42em", color:"rgba(201,168,76,.6)", textTransform:"uppercase", lineHeight:1.3 }}>Les</div>
+            <div className="font-poppins" style={{ fontSize:".82rem", fontWeight:700, letterSpacing:".14em", color:"#FFF", textTransform:"uppercase", lineHeight:1 }}>7 Alertes</div>
+          </div>
+        </button>
+        */}
+        <div />
+
+        {/* Desktop links — toujours centré */}
+        <div className="hidden md:flex items-center gap-8"
+          style={{ position:"absolute", left:"50%", transform:"translateX(-50%)" }}>
+          {links.map(({ label, id }) => (
+            <button key={id} onClick={() => scrollTo(id)}
+              className="font-poppins text-[.7rem] tracking-[.15em] uppercase"
+              style={{ color:"rgba(255,255,255,.58)", background:"none", border:"none", cursor:"pointer", transition:"color .2s" }}
+              onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color = "rgba(201,168,76,.9)"}
+              onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.58)"}
+            >{label}</button>
+          ))}
+        </div>
+
+        {/* Desktop right — décommenter icône login + bouton Commencer quand nécessaire
+        <div className="hidden md:flex items-center gap-3">
+          <button onClick={() => router.push("/login")}
+            style={{ background:"none", border:"none", cursor:"pointer", color:"rgba(255,255,255,.48)", padding:6, transition:"color .2s" }}
+            onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.color = "rgba(201,168,76,.8)"}
+            onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,.48)"}
+          ><User size={17} /></button>
+          <button onClick={() => router.push("/onboarding")}
+            className="font-poppins text-[.68rem] tracking-[.14em] uppercase"
+            style={{ background:"linear-gradient(135deg,#C9A84C,#E8C96A)", color:"#0F0205", fontWeight:700, padding:"9px 22px", borderRadius:100, border:"none", cursor:"pointer", boxShadow:"0 4px 16px rgba(201,168,76,.35)", transition:"transform .2s,box-shadow .2s" }}
+            onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform="translateY(-1px)"; b.style.boxShadow="0 6px 24px rgba(201,168,76,.5)"; }}
+            onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform=""; b.style.boxShadow="0 4px 16px rgba(201,168,76,.35)"; }}
+          >Commencer →</button>
+        </div>
+        */}
+
+        {/* Mobile right */}
+        <div className="flex md:hidden items-center gap-2">
+          {/* Icône login mobile — décommenter quand nécessaire
+          <button onClick={() => router.push("/login")}
+            style={{ background:"none", border:"none", cursor:"pointer", color:"rgba(255,255,255,.52)", padding:8 }}
+          ><User size={18} /></button>
+          */}
+          {/* Hamburger gold pill — comme vasesdhonneur.org */}
+          <button onClick={() => setMenuOpen(o => !o)}
+            style={{
+              background: menuOpen ? "rgba(201,168,76,.12)" : "linear-gradient(135deg,#C9A84C,#E8C96A)",
+              border: menuOpen ? "1px solid rgba(201,168,76,.3)" : "none",
+              borderRadius:100, padding:"9px 14px", cursor:"pointer",
+              display:"flex", flexDirection:"column", gap:4, alignItems:"center",
+            }}>
+            <span style={{ width:18, height:2, background: menuOpen ? "#C9A84C" : "#1A1008", borderRadius:2, display:"block" }} />
+            <span style={{ width:18, height:2, background: menuOpen ? "#C9A84C" : "#1A1008", borderRadius:2, display:"block" }} />
+            <span style={{ width:14, height:2, background: menuOpen ? "#C9A84C" : "#1A1008", borderRadius:2, display:"block", alignSelf:"flex-end" }} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile dropdown */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }}
+            transition={{ duration:.22, ease:[0.22,1,0.36,1] }}
+            style={{
+              position:"fixed", top:68, left:0, right:0, zIndex:99,
+              background:"rgba(10,1,3,.97)", backdropFilter:"blur(18px)",
+              borderBottom:"1px solid rgba(201,168,76,.12)",
+              padding:"12px 24px 24px",
+            }}
+          >
+            {links.map(({ label, id }) => (
+              <button key={id}
+                className="font-poppins text-[.78rem] tracking-[.16em] uppercase"
+                style={{ color:"rgba(255,255,255,.7)", background:"none", border:"none", padding:"14px 0", cursor:"pointer", borderBottom:"1px solid rgba(201,168,76,.07)", textAlign:"left", display:"block", width:"100%" }}
+                onClick={() => { scrollTo(id); setMenuOpen(false); }}
+              >{label}</button>
+            ))}
+            <div style={{ display:"flex", gap:10, marginTop:18 }}>
+              <button onClick={() => { router.push("/login"); setMenuOpen(false); }}
+                className="font-poppins text-[.7rem] tracking-[.12em] uppercase"
+                style={{ flex:1, padding:"11px 0", borderRadius:100, border:"1px solid rgba(201,168,76,.3)", background:"transparent", color:"rgba(255,255,255,.6)", cursor:"pointer" }}
+              >Connexion</button>
+              <button onClick={() => { router.push("/onboarding"); setMenuOpen(false); }}
+                className="font-poppins text-[.7rem] tracking-[.12em] uppercase"
+                style={{ flex:1, padding:"11px 0", borderRadius:100, background:"linear-gradient(135deg,#C9A84C,#E8C96A)", color:"#0F0205", fontWeight:700, border:"none", cursor:"pointer" }}
+              >Commencer →</button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 
 /* ─────────────────────────────────────────
    Curseur clignotant machine à écrire
@@ -165,8 +299,7 @@ export default function LandingPage() {
     });
     const tickerCb = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tickerCb);
-    gsap.ticker.lagSmoothing(0);
-    lenis.on("scroll", () => ScrollTrigger.update());
+    lenis.on("scroll", ScrollTrigger.update);
 
     /* ── GSAP ──────────────────────────────────── */
     const ctx = gsap.context(() => {
@@ -207,11 +340,11 @@ export default function LandingPage() {
         start: "top 80%",
         onEnter: () => {
           gsap.to(galleryRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
-          gsap.to(frameOuterRef.current, { backgroundColor: "#5A3A1A", duration: 0.6, ease: "power2.out" });
+          gsap.to(frameOuterRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
         },
         onLeaveBack: () => {
           gsap.to(galleryRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
-          gsap.to(frameOuterRef.current, { backgroundColor: "#034038", duration: 0.6, ease: "power2.out" });
+          gsap.to(frameOuterRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
         },
       });
 
@@ -221,11 +354,11 @@ export default function LandingPage() {
         start: "top 80%",
         onEnter: () => {
           gsap.to(galleryRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
-          gsap.to(frameOuterRef.current, { backgroundColor: "#034038", duration: 0.6, ease: "power2.out" });
+          gsap.to(frameOuterRef.current, { backgroundColor: "#05625C", duration: 0.6, ease: "power2.out" });
         },
         onLeaveBack: () => {
           gsap.to(galleryRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
-          gsap.to(frameOuterRef.current, { backgroundColor: "#5A3A1A", duration: 0.6, ease: "power2.out" });
+          gsap.to(frameOuterRef.current, { backgroundColor: "#856546", duration: 0.6, ease: "power2.out" });
         },
       });
 
@@ -242,30 +375,49 @@ export default function LandingPage() {
     <div>
       <style>{`.font-poppins{font-family:var(--font-poppins)}`}</style>
       <ToastProvider />
+      <Navbar />
 
       {/* ══════════════════════════════════════════
           SECTION 1 — HERO
       ══════════════════════════════════════════ */}
-      <section
+      <section id="hero-section"
         style={{ height: "100dvh", background: "linear-gradient(158deg,#0F0205,#250810 50%,#0F0205)", position: "relative", overflow: "hidden" }}
         className="flex items-center"
       >
-        {/* Halo central rouge/doré */}
-        <div className="pointer-events-none absolute inset-0" style={{
-          background: "radial-gradient(ellipse 55% 55% at 50% 62%,rgba(192,57,43,.12),transparent),radial-gradient(ellipse 35% 35% at 50% 0%,rgba(201,168,76,.06),transparent)",
-        }} />
-
-        {/* Couronne animée */}
+        {/* Vidéo couronne floutée */}
         <video autoPlay loop muted playsInline className="pointer-events-none"
           style={{
             position: "absolute", top: "50%", left: "50%",
-            transform: "translate(-50%,-50%)", width: "100%", height: "100%",
-            objectFit: "cover", opacity: 0.22, mixBlendMode: "screen", zIndex: 0
+            transform: "translate(-50%,-50%) scale(1.15) translateZ(0)",
+            width: "100%", height: "100%", objectFit: "cover",
+            opacity: 0.4, zIndex: 0,
+            filter: "blur(12px) saturate(0.75)",
+            willChange: "transform",
           }}>
           <source src="/videos/courone.mp4" type="video/mp4" />
         </video>
+
+        {/* Images femmes floutées — texture décorative */}
+        {[
+          { src: "/images/femme2.jpg", style: { top:"-8%", right:"8%", width:"38vw", maxWidth:420, height:"60vh", borderRadius:"42% 58% 58% 42%" } },
+          { src: "/images/femme4.jpg", style: { bottom:"-4%", left:"-4%", width:"28vw", maxWidth:320, height:"50vh", borderRadius:"58% 42% 42% 58%" } },
+        ].map(({ src, style }, i) => (
+          <div key={i} style={{ position:"absolute", ...style, overflow:"hidden", opacity:0.11, filter:"blur(16px) saturate(0.5)", zIndex:0, pointerEvents:"none", willChange:"transform" }}>
+            <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+          </div>
+        ))}
+
+        {/* Overlay sombre pour lisibilité */}
+        <div className="pointer-events-none absolute inset-0" style={{ zIndex:0, background:"rgba(5,0,2,.55)" }} />
+
+        {/* Halo central rouge/doré */}
+        <div className="pointer-events-none absolute inset-0" style={{ zIndex:1,
+          background: "radial-gradient(ellipse 55% 55% at 50% 62%,rgba(192,57,43,.12),transparent),radial-gradient(ellipse 35% 35% at 50% 0%,rgba(201,168,76,.06),transparent)",
+        }} />
+
+        {/* Masques de bords */}
         <div className="pointer-events-none absolute inset-0" style={{
-          zIndex: 0,
+          zIndex: 1,
           background: [
             "radial-gradient(ellipse 78% 78% at 50% 50%,transparent 38%,#0F0205 86%)",
             "linear-gradient(to bottom,#0F0205 0%,transparent 16%,transparent 84%,#0F0205 100%)",
@@ -273,8 +425,9 @@ export default function LandingPage() {
           ].join(",")
         }} />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-14
-                        flex flex-col md:flex-row items-center gap-10 md:gap-16 justify-between">
+        <div className="relative w-full max-w-7xl mx-auto px-6 md:px-14
+                        flex flex-col md:flex-row items-center gap-10 md:gap-16 justify-between"
+             style={{ zIndex:2, paddingTop:68 }}>
           {/* Message de bienvenue */}
           <div className="flex flex-col">
             <motion.p
@@ -419,7 +572,7 @@ export default function LandingPage() {
           Le fond de la galerie passe de blanc → sombre → crème
           Le cadre change en même temps.
       ══════════════════════════════════════════ */}
-      <div ref={galleryRef} style={{ background: "#05625C" }}>
+      <div id="gallery-section" ref={galleryRef} style={{ background: "#05625C" }}>
         <div className="w-full max-w-7xl mx-auto px-6 md:px-14
                         flex flex-row items-start gap-10 md:gap-16">
 
@@ -639,17 +792,18 @@ export default function LandingPage() {
 
           {/* ── Colonne droite : cadre STICKY ── */}
           <div
-            className="hidden md:flex items-center flex-shrink-0"
-            style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "flex-start" }}
+            className="hidden md:flex items-stretch flex-shrink-0"
+            style={{ position: "sticky", top: 68, height: "calc(100dvh - 68px)", alignSelf: "flex-start" }}
           >
-            {/* Outer frame — fond change via GSAP */}
+            {/* Outer frame — fond propre + overflow:hidden → coins arrondis visibles */}
             <div ref={frameOuterRef}
-              className="rounded-[28px] p-[14px]"
-              style={{ background: "#034038", width: 400, maxWidth: "40vw" }}>
+              className="rounded-[40px] overflow-hidden"
+              style={{ background: "#05625C", width: 400, maxWidth: "40vw", height: "100%",
+                       padding: "13vh 0", boxSizing: "border-box" }}>
 
               {/* Inner frame — photos empilées, clipPath reveals */}
-              <div className="rounded-[18px] overflow-hidden"
-                style={{ width: "100%", aspectRatio: "3/4", position: "relative" }}>
+              <div className="rounded-[40px] overflow-hidden"
+                style={{ width: "100%", height: "100%", position: "relative" }}>
 
                 {/* Photo 1 — section 2 (toujours visible en base) : Lilliane Sanogo */}
                 <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "#1A0C10" }}>
@@ -704,7 +858,7 @@ export default function LandingPage() {
       {/* ══════════════════════════════════════════
           SECTION 5 — CTA FINALE
       ══════════════════════════════════════════ */}
-      <div style={{ position: "relative" }}>
+      <div id="cta-section" style={{ position: "relative" }}>
         <section
           style={{
             height: "100dvh",
